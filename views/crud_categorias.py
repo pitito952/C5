@@ -1,0 +1,118 @@
+from PySide6.QtWidgets import (
+    QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QTableWidget, QTableWidgetItem,
+    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget
+)
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
+
+class CrudCategorias(QDialog):
+    def __init__(self, db_connection, parent=None):
+        super().__init__(parent)
+        self.db = db_connection
+        self.setWindowTitle("Gestión de Categorías")
+        self.resize(600, 400)
+        
+        self.setup_ui()
+        self.load_data()
+
+    def setup_ui(self):
+        layout = QVBoxLayout(self)
+
+        title = QLabel("Administración de Categorías de Movimiento")
+        title.setFont(QFont("Arial", 14, QFont.Bold))
+        layout.addWidget(title, alignment=Qt.AlignCenter)
+
+        # Formulario
+        form_widget = QWidget()
+        form_layout = QFormLayout(form_widget)
+        
+        self.le_id = QLineEdit()
+        self.le_id.setReadOnly(True)
+        self.le_id.setPlaceholderText("ID Auto")
+        
+        self.le_nombre = QLineEdit()
+        
+        self.cb_tipo = QComboBox()
+        self.cb_tipo.addItems(["Ingreso", "Egreso"])
+
+        form_layout.addRow("ID:", self.le_id)
+        form_layout.addRow("Nombre Categoria:", self.le_nombre)
+        form_layout.addRow("Tipo:", self.cb_tipo)
+        layout.addWidget(form_widget)
+
+        # Botones de Acción
+        btn_layout = QHBoxLayout()
+        self.btn_guardar = QPushButton("Guardar / Actualizar")
+        self.btn_limpiar = QPushButton("Limpiar Formulario")
+        
+        self.btn_guardar.clicked.connect(self.guardar_categoria)
+        self.btn_limpiar.clicked.connect(self.limpiar_form)
+        
+        btn_layout.addWidget(self.btn_limpiar)
+        btn_layout.addWidget(self.btn_guardar)
+        layout.addLayout(btn_layout)
+
+        # Tabla
+        self.table = QTableWidget()
+        self.table.setColumnCount(3)
+        self.table.setHorizontalHeaderLabels(["ID", "Nombre", "Tipo Global"])
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.setSelectionBehavior(QTableWidget.SelectRows)
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.table.itemSelectionChanged.connect(self.seleccionar_registro)
+        layout.addWidget(self.table)
+
+    def load_data(self):
+        query = "SELECT id, nombre, tipo FROM categorias_movimiento ORDER BY tipo, nombre"
+        registros = self.db.execute_query(query) or []
+        
+        self.table.setRowCount(len(registros))
+        for row_idx, row_data in enumerate(registros):
+            items = [
+                str(row_data['id']),
+                row_data['nombre'],
+                row_data['tipo']
+            ]
+            for col_idx, val in enumerate(items):
+                self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+
+    def seleccionar_registro(self):
+        selected = self.table.selectedItems()
+        if not selected: return
+        
+        row = selected[0].row()
+        self.le_id.setText(self.table.item(row, 0).text())
+        self.le_nombre.setText(self.table.item(row, 1).text())
+        self.cb_tipo.setCurrentText(self.table.item(row, 2).text())
+
+    def limpiar_form(self):
+        self.le_id.clear()
+        self.le_nombre.clear()
+        self.cb_tipo.setCurrentIndex(0)
+        self.table.clearSelection()
+
+    def guardar_categoria(self):
+        cid = self.le_id.text().strip()
+        nombre = self.le_nombre.text().strip()
+        tipo = self.cb_tipo.currentText()
+        
+        if not nombre:
+            QMessageBox.warning(self, "Error", "Debe escribir un nombre para la categoría.")
+            return
+
+        try:
+            if cid:
+                # Update
+                query = "UPDATE categorias_movimiento SET nombre=%s, tipo=%s WHERE id=%s"
+                self.db.execute_query(query, (nombre, tipo, cid))
+                QMessageBox.information(self, "Éxito", "Categoría actualizada.")
+            else:
+                # Insert
+                query = "INSERT INTO categorias_movimiento (nombre, tipo) VALUES (%s, %s)"
+                self.db.execute_query(query, (nombre, tipo))
+                QMessageBox.information(self, "Éxito", "Categoría creada.")
+                
+            self.limpiar_form()
+            self.load_data()
+        except Exception as e:
+            QMessageBox.critical(self, "Error de Base de Datos", str(e))
