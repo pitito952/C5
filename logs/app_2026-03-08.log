@@ -1,0 +1,59 @@
+2026-03-08 18:53:52 - INFO - [MAIN] Entrando al programa.
+2026-03-08 18:53:53 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-08 18:53:53 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-08 18:53:53 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-08 18:53:59 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-08 18:53:59 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-08 18:53:59 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-08 18:53:59 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 18:53:59 - ERROR - [CONNECTION] Error ejecutando query: 
+            SELECT m.id, m.fecha, m.tipo, c.nombre as categoria, m.descripcion, m.monto, u.username
+            FROM movimientos_caja m
+            JOIN categorias_movimiento c ON m.categoria_id = c.id
+            JOIN usuarios u ON m.usuario_id = u.id
+            WHERE m.caja_id = %s
+            ORDER BY m.fecha DESC, m.id DESC
+        . Error: 1054 (42S22): Unknown column 'm.fecha' in 'field list'
+2026-03-08 18:54:20 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-08 19:44:46 - INFO - [MAIN] Entrando al programa.
+2026-03-08 19:44:46 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-08 19:44:46 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-08 19:44:46 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-08 19:44:57 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-08 19:44:57 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-08 19:44:57 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-08 19:44:57 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-08 19:44:57 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 19:45:24 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-08 19:45:24 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-08 19:45:27 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de usuarios.
+2026-03-08 19:45:27 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 19:45:28 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-08 19:45:28 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-08 19:45:30 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de cajas.
+2026-03-08 19:45:30 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 19:45:32 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-08 19:45:32 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-08 19:45:33 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de categorías.
+2026-03-08 19:45:33 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 19:51:45 - WARNING - [MAIN_WINDOW] Intento de guardar movimiento con campos incompletos.
+2026-03-08 19:53:49 - WARNING - [MAIN_WINDOW] Intento de guardar movimiento con campos incompletos.
+2026-03-08 19:53:55 - WARNING - [MAIN_WINDOW] Intento de guardar movimiento con campos incompletos.
+2026-03-08 20:08:36 - INFO - [MAIN] Entrando al programa.
+2026-03-08 20:08:36 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-08 20:08:36 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-08 20:08:36 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-08 20:08:42 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-08 20:08:42 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-08 20:08:42 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-08 20:08:42 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-08 20:08:42 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 20:10:26 - INFO - [MAIN_WINDOW] Vale generado para movimiento ID 3.
+2026-03-08 20:12:05 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-08 20:12:05 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-08 20:12:16 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de categorías.
+2026-03-08 20:12:16 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-08 20:12:51 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-01 hasta 2026-03-08 para la caja ID 1.
+2026-03-08 20:12:57 - INFO - [MAIN_WINDOW] Reporte PDF generado exitosamente en C:/Users/pitito/C5/reports/reporte_2026-03-01_a_2026-03-08.pdf.
+2026-03-08 20:14:14 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-08 20:14:14 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).

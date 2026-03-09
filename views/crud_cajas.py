@@ -4,10 +4,12 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
+import logging
 
 class CrudCajas(QDialog):
     def __init__(self, db_connection, parent=None):
         super().__init__(parent)
+        logging.info("[CRUD_CAJAS] Entrando al programa (Gestión de Cajas).")
         self.db = db_connection
         self.setWindowTitle("Gestión de Cajas")
         self.resize(600, 400)
@@ -46,11 +48,16 @@ class CrudCajas(QDialog):
         btn_layout = QHBoxLayout()
         self.btn_guardar = QPushButton("Guardar / Actualizar")
         self.btn_limpiar = QPushButton("Limpiar Formulario")
-        
+        self.btn_eliminar = QPushButton("Eliminar")
+        self.btn_eliminar.setStyleSheet("background-color: #dc3545; color: white;")
+
         self.btn_guardar.clicked.connect(self.guardar_caja)
         self.btn_limpiar.clicked.connect(self.limpiar_form)
+        self.btn_eliminar.clicked.connect(self.eliminar_caja)
         
         btn_layout.addWidget(self.btn_limpiar)
+        btn_layout.addWidget(self.btn_eliminar)
+        btn_layout.addStretch()
         btn_layout.addWidget(self.btn_guardar)
         layout.addLayout(btn_layout)
 
@@ -65,19 +72,22 @@ class CrudCajas(QDialog):
         layout.addWidget(self.table)
 
     def load_data(self):
-        query = "SELECT id, nombre, descripcion, estado FROM configuracion_caja ORDER BY id"
-        registros = self.db.execute_query(query) or []
-        
-        self.table.setRowCount(len(registros))
-        for row_idx, row_data in enumerate(registros):
-            items = [
-                str(row_data['id']),
-                row_data['nombre'],
-                str(row_data['descripcion']),
-                row_data['estado']
-            ]
-            for col_idx, val in enumerate(items):
-                self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+        try:
+            query = "SELECT id, nombre, descripcion, estado FROM configuracion_caja ORDER BY id"
+            registros = self.db.execute_query(query) or []
+            
+            self.table.setRowCount(len(registros))
+            for row_idx, row_data in enumerate(registros):
+                items = [
+                    str(row_data['id']),
+                    row_data['nombre'],
+                    str(row_data['descripcion']),
+                    row_data['estado']
+                ]
+                for col_idx, val in enumerate(items):
+                    self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+        except Exception as e:
+            logging.error(f"[CRUD_CAJAS] Error cargando datos: {e}")
 
     def seleccionar_registro(self):
         selected = self.table.selectedItems()
@@ -111,14 +121,53 @@ class CrudCajas(QDialog):
                 # Update
                 query = "UPDATE configuracion_caja SET nombre=%s, descripcion=%s, estado=%s WHERE id=%s"
                 self.db.execute_query(query, (nombre, desc, estado, cid))
+                logging.info(f"[CRUD_CAJAS] Actualizando caja ID {cid}: '{nombre}'.")
                 QMessageBox.information(self, "Éxito", "Caja actualizada.")
             else:
                 # Insert
                 query = "INSERT INTO configuracion_caja (nombre, descripcion, estado) VALUES (%s, %s, %s)"
                 self.db.execute_query(query, (nombre, desc, estado))
+                logging.info(f"[CRUD_CAJAS] Creando nueva caja: '{nombre}'.")
                 QMessageBox.information(self, "Éxito", "Nueva caja creada.")
                 
             self.limpiar_form()
             self.load_data()
         except Exception as e:
             QMessageBox.critical(self, "Error de Base de Datos", str(e))
+            logging.error(f"[CRUD_CAJAS] Error guardando caja: {e}")
+
+    def eliminar_caja(self):
+        cid = self.le_id.text().strip()
+        if not cid:
+            QMessageBox.warning(self, "Selección Requerida", "Por favor, seleccione una caja de la tabla para eliminar.")
+            return
+
+        try:
+            # Verificar si la caja está en uso
+            query_check = "SELECT COUNT(*) as count FROM movimientos_caja WHERE caja_id = %s"
+            result = self.db.execute_query(query_check, (cid,))
+            
+            if result and result[0]['count'] > 0:
+                msg = f"No se puede eliminar la caja ID {cid} porque tiene {result[0]['count']} movimientos asociados."
+                QMessageBox.critical(self, "Error de Borrado", msg)
+                logging.warning(f"[CRUD_CAJAS] Intento fallido de eliminar caja ID {cid}: Tiene movimientos asociados.")
+                return
+
+            # Pedir confirmación
+            confirm = QMessageBox.question(self, "Confirmar Eliminación",
+                                           f"¿Está seguro de que desea eliminar la caja ID {cid}?",
+                                           QMessageBox.Yes | QMessageBox.No)
+
+            if confirm == QMessageBox.Yes:
+                # Eliminar
+                query_delete = "DELETE FROM configuracion_caja WHERE id = %s"
+                self.db.execute_query(query_delete, (cid,))
+                logging.info(f"[CRUD_CAJAS] Caja ID {cid} eliminada exitosamente.")
+                QMessageBox.information(self, "Éxito", "Caja eliminada correctamente.")
+                
+                self.limpiar_form()
+                self.load_data()
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error de Base de Datos", str(e))
+            logging.error(f"[CRUD_CAJAS] Error eliminando caja ID {cid}: {e}")

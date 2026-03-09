@@ -4,10 +4,13 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
+import bcrypt
+import logging
 
 class CrudUsuarios(QDialog):
     def __init__(self, db_connection, parent=None):
         super().__init__(parent)
+        logging.info("[CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).")
         self.db = db_connection
         self.setWindowTitle("Gestión de Usuarios")
         self.resize(700, 500)
@@ -20,7 +23,8 @@ class CrudUsuarios(QDialog):
 
         title = QLabel("Administración de Usuarios")
         title.setFont(QFont("Arial", 14, QFont.Bold))
-        layout.addWidget(title, alignment=Qt.AlignCenter)
+        title.setAlignment(Qt.AlignCenter)
+        layout.addWidget(title)
 
         # Formulario
         form_widget = QWidget()
@@ -52,11 +56,16 @@ class CrudUsuarios(QDialog):
         btn_layout = QHBoxLayout()
         self.btn_guardar = QPushButton("Guardar / Actualizar")
         self.btn_limpiar = QPushButton("Limpiar Formulario")
-        
+        self.btn_eliminar = QPushButton("Eliminar")
+        self.btn_eliminar.setStyleSheet("background-color: #dc3545; color: white;")
+
         self.btn_guardar.clicked.connect(self.guardar_usuario)
         self.btn_limpiar.clicked.connect(self.limpiar_form)
+        self.btn_eliminar.clicked.connect(self.eliminar_usuario)
         
         btn_layout.addWidget(self.btn_limpiar)
+        btn_layout.addWidget(self.btn_eliminar)
+        btn_layout.addStretch()
         btn_layout.addWidget(self.btn_guardar)
         layout.addLayout(btn_layout)
 
@@ -71,24 +80,30 @@ class CrudUsuarios(QDialog):
         layout.addWidget(self.table)
 
     def load_data(self):
-        query = "SELECT id, username, rol, activo, ultimo_acceso FROM usuarios ORDER BY id"
-        registros = self.db.execute_query(query) or []
-        
-        self.table.setRowCount(len(registros))
-        for row_idx, row_data in enumerate(registros):
-            estado = "Activo" if row_data['activo'] else "Inactivo"
-            acceso = str(row_data['ultimo_acceso']) if row_data['ultimo_acceso'] else "Nunca"
+        try:
+            query = "SELECT id, username, rol, activo, ultimo_acceso FROM usuarios ORDER BY id"
+            registros = self.db.execute_query(query)
             
-            items = [
-                str(row_data['id']),
-                row_data['username'],
-                row_data['rol'],
-                estado,
-                acceso
-            ]
-            
-            for col_idx, val in enumerate(items):
-                self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+            if registros is None:
+                registros = []
+                
+            self.table.setRowCount(len(registros))
+            for row_idx, row_data in enumerate(registros):
+                estado = "Activo" if row_data['activo'] else "Inactivo"
+                acceso = str(row_data['ultimo_acceso']) if row_data['ultimo_acceso'] else "Nunca"
+                
+                items = [
+                    str(row_data['id']),
+                    row_data['username'],
+                    row_data['rol'],
+                    estado,
+                    acceso
+                ]
+                
+                for col_idx, val in enumerate(items):
+                    self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+        except Exception as e:
+            logging.error(f"[CRUD_USUARIOS] Error cargando datos: {e}")
 
     def seleccionar_registro(self):
         selected = self.table.selectedItems()
@@ -118,21 +133,31 @@ class CrudUsuarios(QDialog):
         username = self.le_username.text().strip()
         pwd = self.le_password.text().strip()
         rol = self.cb_rol.currentText()
-        activo = True if self.cb_estado.currentText() == "Activo" else False
+        activo = 1 if self.cb_estado.currentText() == "Activo" else 0
         
         if not username:
             QMessageBox.warning(self, "Error", "El nombre de usuario es obligatorio.")
             return
 
         try:
+            hashed_pwd = None
+            if pwd:
+                # Generar hash de la contraseña
+                salt = bcrypt.gensalt()
+                hashed_pwd = bcrypt.hashpw(pwd.encode('utf-8'), salt)
+                # Convertir bytes a string para guardar en MySQL (VARCHAR)
+                hashed_pwd = hashed_pwd.decode('utf-8')
+
             if uid:
                 # Update
                 if pwd:
                     query = "UPDATE usuarios SET username=%s, password_hash=%s, rol=%s, activo=%s WHERE id=%s"
-                    params = (username, pwd, rol, activo, uid)
+                    params = (username, hashed_pwd, rol, activo, uid)
+                    logging.info(f"[CRUD_USUARIOS] Actualizando usuario ID {uid} con nueva contraseña.")
                 else:
                     query = "UPDATE usuarios SET username=%s, rol=%s, activo=%s WHERE id=%s"
                     params = (username, rol, activo, uid)
+                    logging.info(f"[CRUD_USUARIOS] Actualizando usuario ID {uid}.")
                 
                 self.db.execute_query(query, params)
                 QMessageBox.information(self, "Éxito", "Usuario modificado.")
@@ -143,10 +168,48 @@ class CrudUsuarios(QDialog):
                     return
                     
                 query = "INSERT INTO usuarios (username, password_hash, rol, activo) VALUES (%s, %s, %s, %s)"
-                self.db.execute_query(query, (username, pwd, rol, activo))
+                self.db.execute_query(query, (username, hashed_pwd, rol, activo))
+                logging.info(f"[CRUD_USUARIOS] Creando nuevo usuario '{username}'.")
                 QMessageBox.information(self, "Éxito", "Usuario creado.")
                 
             self.limpiar_form()
             self.load_data()
         except Exception as e:
             QMessageBox.critical(self, "Error de Base de Datos", str(e))
+            logging.error(f"[CRUD_USUARIOS] Error guardando usuario: {e}")
+
+    def eliminar_usuario(self):
+        uid = self.le_id.text().strip()
+        if not uid:
+            QMessageBox.warning(self, "Selección Requerida", "Por favor, seleccione un usuario de la tabla para eliminar.")
+            return
+
+        try:
+            # Verificar si el usuario está en uso
+            query_check = "SELECT COUNT(*) as count FROM movimientos_caja WHERE usuario_id = %s"
+            result = self.db.execute_query(query_check, (uid,))
+            
+            if result and result[0]['count'] > 0:
+                msg = f"No se puede eliminar el usuario ID {uid} porque tiene {result[0]['count']} movimientos asociados."
+                QMessageBox.critical(self, "Error de Borrado", msg)
+                logging.warning(f"[CRUD_USUARIOS] Intento fallido de eliminar usuario ID {uid}: Tiene movimientos asociados.")
+                return
+
+            # Pedir confirmación
+            confirm = QMessageBox.question(self, "Confirmar Eliminación",
+                                           f"¿Está seguro de que desea eliminar al usuario ID {uid}?",
+                                           QMessageBox.Yes | QMessageBox.No)
+
+            if confirm == QMessageBox.Yes:
+                # Eliminar
+                query_delete = "DELETE FROM usuarios WHERE id = %s"
+                self.db.execute_query(query_delete, (uid,))
+                logging.info(f"[CRUD_USUARIOS] Usuario ID {uid} eliminado exitosamente.")
+                QMessageBox.information(self, "Éxito", "Usuario eliminado correctamente.")
+                
+                self.limpiar_form()
+                self.load_data()
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error de Base de Datos", str(e))
+            logging.error(f"[CRUD_USUARIOS] Error eliminando usuario ID {uid}: {e}")

@@ -8,10 +8,12 @@
 # -----------------------------------------------------------------------------
 #   01 |07/03/2026| Antigravity/Addy López |Versión Inicial del Programa.
 #   02 |07/03/2026| Antigravity/Addy López |Implementación de cifrado de credenciales.
+#   03 |07/03/2026| Antigravity/Addy López |Implementación de Sistema de Logs.
 # *****************************************************************************
 #
 import os
 import mysql.connector
+import logging
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 
@@ -50,9 +52,9 @@ class DatabaseConnection:
                 self._key = os.getenv("ENCRYPTION_KEY")
                 
             if not self._key:
-                print("ADVERTENCIA: No se encontró 'secret.key' ni la variable 'ENCRYPTION_KEY'. La conexión fallará si la contraseña está cifrada.")
+                logging.warning("[CONNECTION] No se encontró 'secret.key' ni la variable 'ENCRYPTION_KEY'. La conexión fallará si la contraseña está cifrada.")
         except Exception as e:
-            print(f"Error cargando la clave de cifrado: {e}")
+            logging.error(f"[CONNECTION] Error cargando la clave de cifrado: {e}")
 
     def _decrypt_password(self, encrypted_password):
         """
@@ -75,7 +77,7 @@ class DatabaseConnection:
             return decrypted_bytes.decode()
         except Exception as e:
             # Si falla el descifrado (ej. token inválido), asumimos que la contraseña estaba en texto plano
-            # print(f"Nota: La contraseña no estaba cifrada o la clave es incorrecta. Usando valor original.")
+            # logging.debug(f"[CONNECTION] La contraseña no estaba cifrada o la clave es incorrecta. Usando valor original.")
             return encrypted_password
 
     def _connect(self):
@@ -95,9 +97,9 @@ class DatabaseConnection:
                 database=os.getenv("DB_NAME", "caja_chica_db"),
                 port=int(os.getenv("DB_PORT", 3306))
             )
-            print("Successfully connected to the database.")
+            logging.info("[CONNECTION] Conexión exitosa a la base de datos.")
         except mysql.connector.Error as err:
-            print(f"Error connecting to MySQL Database: {err}")
+            logging.error(f"[CONNECTION] Error conectando a MySQL: {err}")
             self._connection = None
 
     def get_connection(self):
@@ -105,6 +107,7 @@ class DatabaseConnection:
            reconectar llamando a _connect(). Devuelve el objeto de conexión."""
         # Reconnect if connection was lost
         if self._connection and not self._connection.is_connected():
+            logging.warning("[CONNECTION] Conexión perdida. Intentando reconectar...")
             self._connect()
         return self._connection
 
@@ -120,6 +123,7 @@ class DatabaseConnection:
 
         conn = self.get_connection()
         if not conn:
+            logging.error("[CONNECTION] No se pudo obtener una conexión válida para ejecutar la consulta.")
             return None
         
         cursor = conn.cursor(dictionary=True)
@@ -132,7 +136,7 @@ class DatabaseConnection:
                 result = cursor.lastrowid
             return result
         except mysql.connector.Error as err:
-            print(f"Error executing query: {err}")
+            logging.error(f"[CONNECTION] Error ejecutando query: {query}. Error: {err}")
             if not query.strip().upper().startswith("SELECT"):
                 conn.rollback()
             return None
@@ -141,6 +145,9 @@ class DatabaseConnection:
 
 # Provide a simple test function when running this module directly
 if __name__ == "__main__":
+    # Configuración básica de logging para pruebas directas
+    logging.basicConfig(level=logging.INFO)
+
     db = DatabaseConnection()
     conn = db.get_connection()
     if conn and conn.is_connected():
