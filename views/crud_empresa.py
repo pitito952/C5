@@ -1,17 +1,25 @@
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QLabel, QLineEdit, QPushButton, 
-    QMessageBox, QWidget, QFileDialog
+    QMessageBox, QWidget, QFileDialog, QApplication
 )
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont, QPixmap
+from PySide6.QtCore import Qt, QRegularExpression
+from PySide6.QtGui import QFont, QPixmap, QRegularExpressionValidator
 import os
+import logging
+from decimal import Decimal, InvalidOperation
 
 class CrudEmpresa(QDialog):
     def __init__(self, db_connection, parent=None):
         super().__init__(parent)
+        logging.info("[CRUD_EMPRESA] Entrando al programa (Configuración de Empresa).")
         self.db = db_connection
-        self.setWindowTitle("Configuración de Empresa")
-        self.resize(500, 300)
+        self.setWindowTitle("Configuración de Empresa y Moneda")
+        
+        if parent:
+            self.resize(int(parent.width() * 0.6), int(parent.height() * 0.7))
+            self.move(parent.geometry().center() - self.rect().center())
+        else:
+            self.resize(600, 450)
         
         self.setup_ui()
         self.load_data()
@@ -27,6 +35,7 @@ class CrudEmpresa(QDialog):
         form_widget = QWidget()
         form_layout = QFormLayout(form_widget)
         
+        # --- Campos de Empresa ---
         self.le_codigo = QLineEdit()
         self.le_codigo.setMaxLength(3)
         self.le_codigo.setPlaceholderText("Ej. EMP")
@@ -50,10 +59,28 @@ class CrudEmpresa(QDialog):
         self.lbl_logo_preview.setStyleSheet("border: 1px solid #ccc;")
         self.lbl_logo_preview.setScaledContents(True)
 
+        # --- Campos de Moneda ---
+        self.le_simbolo = QLineEdit()
+        self.le_simbolo.setMaxLength(5)
+        self.le_simbolo.setPlaceholderText("Ej. $ (puede dejarse vacío)")
+        
+        self.le_nombre_moneda = QLineEdit()
+        self.le_nombre_moneda.setMaxLength(50)
+        self.le_nombre_moneda.setPlaceholderText("Ej. Peso (puede dejarse vacío)")
+        
+        self.le_tasa = QLineEdit()
+        regex = QRegularExpression(r"^\d{0,7}(\.\d{0,4})?$")
+        validator = QRegularExpressionValidator(regex, self.le_tasa)
+        self.le_tasa.setValidator(validator)
+        self.le_tasa.setPlaceholderText("Ej. 1.0000")
+
         form_layout.addRow("Código (3 letras):", self.le_codigo)
         form_layout.addRow("Nombre de Empresa:", self.le_nombre)
         form_layout.addRow("Ruta Logo:", logo_layout)
         form_layout.addRow("", self.lbl_logo_preview)
+        form_layout.addRow("Símbolo Moneda:", self.le_simbolo)
+        form_layout.addRow("Nombre Moneda:", self.le_nombre_moneda)
+        form_layout.addRow("Tasa de Cambio:", self.le_tasa)
 
         layout.addWidget(form_widget)
 
@@ -92,56 +119,63 @@ class CrudEmpresa(QDialog):
             self.lbl_logo_preview.setText("Sin Logo")
 
     def load_data(self):
-        query = "SELECT codigo_empresa, nombre_empresa, ruta_logo FROM parametros_control WHERE id = 1"
+        # Asegurarse de que el registro de parámetros exista
+        self.db.execute_query("""
+            INSERT IGNORE INTO parametros_control (id, codigo_empresa, nombre_empresa, simbolo_moneda, nombre_moneda, tasa_cambio) 
+            VALUES (1, 'EMP', 'Mi Empresa', '$', 'Peso', 1.0000)
+        """)
+        
+        query = "SELECT * FROM parametros_control WHERE id = 1"
         registros = self.db.execute_query(query)
         
-        if registros and len(registros) > 0:
+        if registros:
             row = registros[0]
             self.le_codigo.setText(row.get('codigo_empresa', ''))
             self.le_nombre.setText(row.get('nombre_empresa', ''))
+            self.le_simbolo.setText(row.get('simbolo_moneda', '$'))
+            self.le_nombre_moneda.setText(row.get('nombre_moneda', 'Peso'))
+            self.le_tasa.setText(str(row.get('tasa_cambio', '1.0000')))
             
             logo_path = row.get('ruta_logo', '')
             if logo_path:
                 self.le_logo_path.setText(logo_path)
                 self.update_preview(logo_path)
         else:
-            # If no row exists, we might need to create it later, but our init script creates id=1
-            pass
+            logging.error("[CRUD_EMPRESA] No se pudo cargar ni crear el registro de parámetros (id=1).")
 
     def guardar_cambios(self):
         codigo = self.le_codigo.text().strip().upper()
         nombre = self.le_nombre.text().strip()
         ruta_logo = self.le_logo_path.text().strip()
+        simbolo = self.le_simbolo.text().strip()
+        nombre_moneda = self.le_nombre_moneda.text().strip()
+        tasa_str = self.le_tasa.text().strip()
         
-        if not codigo or not nombre:
-            QMessageBox.warning(self, "Error", "El Código y el Nombre de la Empresa son obligatorios.")
+        # Código y Nombre de empresa son los únicos campos de texto obligatorios
+        if not all([codigo, nombre, tasa_str]):
+            QMessageBox.warning(self, "Error", "Código, Nombre de Empresa y Tasa de Cambio son obligatorios.")
             return
             
-        if len(codigo) > 3:
-            QMessageBox.warning(self, "Error", "El Código no puede tener más de 3 letras.")
+        try:
+            tasa = Decimal(tasa_str)
+        except InvalidOperation:
+            QMessageBox.warning(self, "Error", "La Tasa de Cambio debe ser un número válido.")
             return
 
-        # Ensure NULL is sent if empty string for ruta_logo
         logo_val = ruta_logo if ruta_logo else None
 
         try:
-            # Check if record 1 exists
-            check = self.db.execute_query("SELECT id FROM parametros_control WHERE id = 1")
-            if check:
-                query = """
-                    UPDATE parametros_control 
-                    SET codigo_empresa=%s, nombre_empresa=%s, ruta_logo=%s 
-                    WHERE id=1
-                """
-                self.db.execute_query(query, (codigo, nombre, logo_val))
-            else:
-                query = """
-                    INSERT INTO parametros_control (id, codigo_empresa, nombre_empresa, ruta_logo)
-                    VALUES (1, %s, %s, %s)
-                """
-                self.db.execute_query(query, (codigo, nombre, logo_val))
+            query = """
+                UPDATE parametros_control 
+                SET codigo_empresa=%s, nombre_empresa=%s, ruta_logo=%s, 
+                    simbolo_moneda=%s, nombre_moneda=%s, tasa_cambio=%s
+                WHERE id=1
+            """
+            params = (codigo, nombre, logo_val, simbolo, nombre_moneda, tasa)
+            self.db.execute_query(query, params)
 
             QMessageBox.information(self, "Éxito", "Parámetros actualizados correctamente.")
             self.accept()
         except Exception as e:
             QMessageBox.critical(self, "Error de Base de Datos", str(e))
+            logging.error(f"[CRUD_EMPRESA] Error guardando parámetros: {e}")

@@ -6,21 +6,18 @@
 # -----------------------------------------------------------------------------
 #  Ver |  Fecha   |     Autor              |   D e s c r i p c i ó n
 # -----------------------------------------------------------------------------
-#   01 |07/03/2026| Antigravity/Addy López |Versión Inicial del Programa.
-#   02 |07/03/2026| Antigravity/Addy López |Implementación de Sistema de Logs.
-#   03 |07/03/2026| Antigravity/Addy López |Corrección de generación de reportes PDF.
-#   04 |07/03/2026| Antigravity/Addy López |Alineación con esquema de BD (Sesiones).
-#   05 |07/03/2026| Antigravity/Addy López |Restauración de Dashboard y mejoras de UI.
+#   ...
+#   16 |07/03/2026| Antigravity/Addy López |Corrección de INSERT en movimientos_caja.
 # *****************************************************************************
 #
 import logging
 import os
-from datetime import datetime
+from decimal import Decimal
 
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QTableWidget, QTableWidgetItem, QHeaderView, QComboBox, QLineEdit,
-    QDateEdit, QFileDialog, QMessageBox, QDialog, QFormLayout, QFrame, QMenu
+    QDateEdit, QFileDialog, QMessageBox, QDialog, QFormLayout, QFrame, QMenu, QApplication
 )
 from PySide6.QtCore import Qt, QDate, QRegularExpression
 from PySide6.QtGui import QFont, QAction, QRegularExpressionValidator, QColor
@@ -28,11 +25,21 @@ from database.connection import DatabaseConnection
 from views.crud_cajas import CrudCajas
 from views.crud_categorias import CrudCategorias
 from views.crud_usuarios import CrudUsuarios
+from views.crud_empresa import CrudEmpresa
+from views.report_viewer import ReportViewerWindow
+from views.modal_cierre import ModalCierre
 from utils.export_pdf import generar_listado_pdf, generar_vale_pdf
 
 class MainWindow(QMainWindow):
     def __init__(self, usuario_id, username, rol, caja_id, caja_nombre):
         super().__init__()
+
+        self.le_monto = Decimal(0)
+        self.card_saldo = self.btn_guardar_mov = self.table_movimientos = self.btn_cierre = self.lbl_saldo_val = None
+        self.lbl_ingresos_val = self.lbl_egresos_val = self.report_start_date = self.report_end_date = None
+        self.card_ingresos = self.card_egresos = self.cb_tipo_mov = self.cb_categoria = self.le_descripcion = None
+        self.lbl_inicial_sesion_val = None
+
         logging.info("[MAIN_WINDOW] Entrando al programa (Ventana Principal).")
 
         self.usuario_id = usuario_id
@@ -40,18 +47,61 @@ class MainWindow(QMainWindow):
         self.rol = rol
         self.caja_id = caja_id
         self.caja_nombre = caja_nombre
-        self.sesion_id = None # ID de la sesión activa
+        self.sesion_id = None 
+        self.simbolo_moneda = "$" # Valor por defecto
+        self.fondo_fijo = 0.0
         
         self.db = DatabaseConnection()
         
         self.setWindowTitle("C5 - Módulo de Caja Chica")
-        self.resize(1100, 800)
+        self.center_and_resize(0.8)
         
+        self.cargar_parametros_empresa()
+        self.cargar_fondo_fijo()
         self.setup_ui()
         self.inicializar_sesion()
         self.load_initial_data()
 
+    def center_and_resize(self, factor):
+        screen = QApplication.primaryScreen().availableGeometry()
+        width = int(screen.width() * factor)
+        height = int(screen.height() * factor)
+        self.resize(width, height)
+        self.move(screen.center() - self.rect().center())
+
+    def cargar_parametros_empresa(self):
+        """Carga el símbolo de moneda desde la base de datos."""
+        try:
+            query = "SELECT simbolo_moneda FROM parametros_control WHERE id = 1"
+            res = self.db.execute_query(query)
+            if res:
+                self.simbolo_moneda = res[0].get('simbolo_moneda', '')
+                if self.simbolo_moneda is None:
+                    self.simbolo_moneda = ""
+        except Exception as e:
+            logging.error(f"[MAIN_WINDOW] Error cargando parámetros de empresa: {e}")
+
+    def cargar_fondo_fijo(self):
+        """Carga el fondo fijo de la caja actual."""
+        try:
+            query = "SELECT fondo_fijo FROM configuracion_caja WHERE id = %s"
+            res = self.db.execute_query(query, (self.caja_id,))
+            if res:
+                self.fondo_fijo = float(res[0].get('fondo_fijo', 0.0))
+                logging.info(f"[MAIN_WINDOW] Fondo fijo de caja {self.caja_id} cargado: {self.fondo_fijo}")
+        except Exception as e:
+            logging.error(f"[MAIN_WINDOW] Error cargando fondo fijo de caja {self.caja_id}: {e}")
+
+    def format_money(self, amount):
+        """Formatea un monto con el símbolo de moneda configurado."""
+        if self.simbolo_moneda:
+            return f"{self.simbolo_moneda} {amount:,.2f}"
+        else:
+            return f"{amount:,.2f}"
+
     def setup_ui(self):
+        """Preparar la ventana con todos sus componentes"""
+
         # --- Menu Bar ---
         menu_bar = self.menuBar()
         
@@ -61,6 +111,10 @@ class MainWindow(QMainWindow):
         report_action = QAction("Generar Reporte General", self)
         report_action.triggered.connect(self.mostrar_dialogo_reporte)
         file_menu.addAction(report_action)
+
+        view_reports_action = QAction("Ver Reportes Guardados", self)
+        view_reports_action.triggered.connect(self.abrir_report_viewer)
+        file_menu.addAction(view_reports_action)
         
         file_menu.addSeparator()
         
@@ -72,6 +126,12 @@ class MainWindow(QMainWindow):
         if self.rol == "Administrador":
             admin_menu = menu_bar.addMenu("Administración")
             
+            empresa_action = QAction("Configuración de Empresa", self)
+            empresa_action.triggered.connect(self.abrir_crud_empresa)
+            admin_menu.addAction(empresa_action)
+            
+            admin_menu.addSeparator()
+
             users_action = QAction("Gestionar Usuarios", self)
             users_action.triggered.connect(self.abrir_crud_usuarios)
             admin_menu.addAction(users_action)
@@ -112,13 +172,15 @@ class MainWindow(QMainWindow):
         dashboard_layout = QHBoxLayout()
         dashboard_layout.setSpacing(20)
 
-        self.card_saldo = self.create_dashboard_card("Saldo Actual", "$ 0.00", "#0d6efd") # Azul
-        self.card_ingresos = self.create_dashboard_card("Total Ingresos", "$ 0.00", "#198754") # Verde
-        self.card_egresos = self.create_dashboard_card("Total Egresos", "$ 0.00", "#dc3545") # Rojo
+        self.card_inicial = self.create_dashboard_card("Fondo Inicial", self.format_money(0.0), "#6c757d") # Gris
+        self.card_ingresos = self.create_dashboard_card("Total Ingresos", self.format_money(0.0), "#198754") # Verde
+        self.card_egresos = self.create_dashboard_card("Total Egresos", self.format_money(0.0), "#dc3545") # Rojo
+        self.card_saldo = self.create_dashboard_card("Saldo Actual", self.format_money(0.0), "#0d6efd") # Azul
 
-        dashboard_layout.addWidget(self.card_saldo)
+        dashboard_layout.addWidget(self.card_inicial)
         dashboard_layout.addWidget(self.card_ingresos)
         dashboard_layout.addWidget(self.card_egresos)
+        dashboard_layout.addWidget(self.card_saldo)
         main_layout.addLayout(dashboard_layout)
 
         # --- Sección de Registro Rápido ---
@@ -142,6 +204,13 @@ class MainWindow(QMainWindow):
             }
             QLineEdit:focus, QComboBox:focus {
                 border-color: #86b7fe;
+            }
+            QComboBox::item:selected {
+                background-color: #0d6efd; /* Azul */
+                color: white;
+            }
+            QComboBox::item:hover {
+                background-color: #e9ecef; /* Gris claro al pasar el mouse */
             }
         """)
         registro_layout = QVBoxLayout(registro_group)
@@ -181,14 +250,14 @@ class MainWindow(QMainWindow):
         vbox_desc.addWidget(self.le_descripcion)
         form_layout.addLayout(vbox_desc, stretch=2)
         
-        # Monto (QLineEdit con validador)
+        # Monto
         vbox_monto = QVBoxLayout()
-        vbox_monto.addWidget(QLabel("Monto ($):"))
+        label_monto = f"Monto ({self.simbolo_moneda}):" if self.simbolo_moneda else "Monto:"
+        vbox_monto.addWidget(QLabel(label_monto))
         self.le_monto = QLineEdit()
         self.le_monto.setPlaceholderText("0.00")
         self.le_monto.setFixedWidth(100)
         self.le_monto.setAlignment(Qt.AlignRight)
-        # Validar solo números y un punto decimal
         regex = QRegularExpression(r"^\d{0,7}(\.\d{0,2})?$")
         validator = QRegularExpressionValidator(regex, self.le_monto)
         self.le_monto.setValidator(validator)
@@ -197,7 +266,7 @@ class MainWindow(QMainWindow):
         
         # Botón Guardar
         vbox_btn = QVBoxLayout()
-        vbox_btn.addWidget(QLabel("")) # Espaciador para alinear abajo
+        vbox_btn.addWidget(QLabel("")) 
         self.btn_guardar_mov = QPushButton("Registrar")
         self.btn_guardar_mov.setCursor(Qt.PointingHandCursor)
         self.btn_guardar_mov.setFixedHeight(32)
@@ -225,15 +294,19 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(registro_group)
 
         # --- Tabla de Movimientos ---
-        lbl_historial = QLabel("Historial de Movimientos")
+        lbl_historial = QLabel("Historial de Movimientos (Sesión Actual)")
         lbl_historial.setFont(QFont("Segoe UI", 12, QFont.Bold))
         lbl_historial.setStyleSheet("margin-top: 10px;")
         main_layout.addWidget(lbl_historial)
 
         self.table_movimientos = QTableWidget()
-        self.table_movimientos.setColumnCount(7)
-        self.table_movimientos.setHorizontalHeaderLabels(["ID", "Fecha", "Tipo", "Categoría", "Concepto", "Monto", "Usuario"])
-        self.table_movimientos.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table_movimientos.setColumnCount(6)
+        self.table_movimientos.setHorizontalHeaderLabels(["Fecha", "Tipo", "Categoría", "Concepto", "Monto", "Usuario"])
+        
+        for indice, ancho in enumerate((120, 80, 200, 350, 120, 150), start=0):
+            self.table_movimientos.setColumnWidth(indice, ancho)
+            
+        self.table_movimientos.verticalHeader().setDefaultSectionSize(18)
         self.table_movimientos.setSelectionBehavior(QTableWidget.SelectRows)
         self.table_movimientos.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table_movimientos.setAlternatingRowColors(True)
@@ -241,6 +314,8 @@ class MainWindow(QMainWindow):
             QTableWidget {
                 border: 1px solid #dee2e6;
                 gridline-color: #e9ecef;
+                font: 10pt "Segoe UI";
+                gridline-color: rgb(147, 147, 147);
             }
             QHeaderView::section {
                 background-color: #e9ecef;
@@ -250,13 +325,33 @@ class MainWindow(QMainWindow):
             }
         """)
         
-        # Habilitar menú contextual (click derecho)
         self.table_movimientos.setContextMenuPolicy(Qt.CustomContextMenu)
         self.table_movimientos.customContextMenuRequested.connect(self.mostrar_menu_contextual)
         
         main_layout.addWidget(self.table_movimientos)
 
+        # --- Footer (Botón Cierre) ---
+        footer_layout = QHBoxLayout()
+        self.btn_cierre = QPushButton("Cerrar Caja")
+        self.btn_cierre.setStyleSheet("""
+            QPushButton {
+                background-color: #dc3545; 
+                color: white; 
+                font-weight: bold; 
+                padding: 8px 15px;
+                border-radius: 4px;
+            }
+            QPushButton:hover { background-color: #bb2d3b; }
+        """)
+        self.btn_cierre.clicked.connect(self.abrir_modal_cierre)
+        
+        footer_layout.addWidget(self.btn_cierre)
+        footer_layout.addStretch()
+        main_layout.addLayout(footer_layout)
+
     def create_dashboard_card(self, title, value, color):
+        """Preparar el Dashboard"""
+
         card = QFrame()
         card.setStyleSheet(f"""
             QFrame {{
@@ -280,23 +375,19 @@ class MainWindow(QMainWindow):
         layout.addWidget(lbl_title)
         layout.addWidget(lbl_value)
         
-        # Guardar referencia al label de valor para actualizarlo después
         if title == "Saldo Actual":
             self.lbl_saldo_val = lbl_value
         elif title == "Total Ingresos":
             self.lbl_ingresos_val = lbl_value
         elif title == "Total Egresos":
             self.lbl_egresos_val = lbl_value
+        elif title == "Fondo Inicial":
+            self.lbl_inicial_sesion_val = lbl_value
             
         return card
 
     def inicializar_sesion(self):
-        """
-        Verifica si existe una sesión abierta para esta caja.
-        Si no, crea una nueva sesión automáticamente.
-        """
         try:
-            # Buscar sesión abierta
             query = "SELECT id FROM sesiones_caja WHERE caja_id = %s AND estado = 'Abierta' ORDER BY id DESC LIMIT 1"
             result = self.db.execute_query(query, (self.caja_id,))
             
@@ -304,15 +395,37 @@ class MainWindow(QMainWindow):
                 self.sesion_id = result[0]['id']
                 logging.info(f"[MAIN_WINDOW] Sesión existente encontrada. ID: {self.sesion_id}")
             else:
-                # Crear nueva sesión
-                logging.info(f"[MAIN_WINDOW] No hay sesión abierta para la caja {self.caja_id}. Creando nueva sesión automática.")
+                #logging.info(f"[MAIN_WINDOW] No hay sesión abierta para la caja {self.caja_id}. Creando nueva sesión automática.")
+                #query_insert = """
+                #    INSERT INTO sesiones_caja (caja_id, usuario_id, fecha_apertura, monto_inicial, estado)
+                #    VALUES (%s, %s, NOW(), %s, 'Abierta')
+                #"""
+                #self.sesion_id = self.db.execute_query(query_insert, (self.caja_id, self.usuario_id, self.fondo_fijo))
+                #logging.info(f"[MAIN_WINDOW] Nueva sesión creada exitosamente. ID: {self.sesion_id}")
+
+                # No hay sesión abierta, buscar el saldo final de la última sesión cerrada
+                query_last_session = """SELECT monto_final_fisico 
+                                            FROM sesiones_caja 
+                                                WHERE caja_id = %s AND estado = 'Cerrada' 
+                                                    ORDER BY fecha_cierre DESC LIMIT 1
+                                    """
+                last_session = self.db.execute_query(query_last_session, (self.caja_id,))
+
+                if last_session:
+                    monto_inicial = float(last_session[0]['monto_final_fisico'])
+                else:
+                    # Si nunca ha habido una sesión, usar el fondo fijo de la caja
+                    monto_inicial = self.fondo_fijo
+
+                logging.info(f"[MAIN_WINDOW] Creando nueva sesión para caja {self.caja_id} con monto inicial de {monto_inicial}.")
+
                 query_insert = """
-                    INSERT INTO sesiones_caja (caja_id, usuario_id, fecha_apertura, monto_inicial, estado)
-                    VALUES (%s, %s, NOW(), 0.00, 'Abierta')
-                """
-                self.sesion_id = self.db.execute_query(query_insert, (self.caja_id, self.usuario_id))
+                                INSERT INTO sesiones_caja (caja_id, usuario_id, fecha_apertura, monto_inicial, estado)
+                                VALUES (%s, %s, NOW(), %s, 'Abierta')
+                               """
+                self.sesion_id = self.db.execute_query(query_insert, (self.caja_id, self.usuario_id, self.fondo_fijo))
                 logging.info(f"[MAIN_WINDOW] Nueva sesión creada exitosamente. ID: {self.sesion_id}")
-                
+
         except Exception as e:
             logging.critical(f"[MAIN_WINDOW] Error crítico al inicializar sesión: {e}")
             QMessageBox.critical(self, "Error Crítico", "No se pudo inicializar la sesión de caja. La aplicación se cerrará.")
@@ -336,64 +449,74 @@ class MainWindow(QMainWindow):
             logging.warning(f"[MAIN_WINDOW] No se encontraron categorías para el tipo '{tipo}'.")
 
     def cargar_movimientos(self):
-        # Consulta adaptada al esquema real: usa sesiones_caja para filtrar por caja
+        # Filtrar SOLO por la sesión actual
         query = """
             SELECT m.id, m.fecha_hora, m.tipo, c.nombre as categoria, m.concepto, m.monto, u.username
             FROM movimientos_caja m
             JOIN sesiones_caja s ON m.sesion_id = s.id
             JOIN categorias_movimiento c ON m.categoria_id = c.id
             JOIN usuarios u ON s.usuario_id = u.id
-            WHERE s.caja_id = %s
+            WHERE m.sesion_id = %s
             ORDER BY m.fecha_hora DESC, m.id DESC
         """
-        movimientos = self.db.execute_query(query, (self.caja_id,)) or []
+        movimientos = self.db.execute_query(query, (self.sesion_id,)) or []
         
         self.table_movimientos.setRowCount(len(movimientos))
         for row, mov in enumerate(movimientos):
-            self.table_movimientos.setItem(row, 0, QTableWidgetItem(str(mov['id'])))
-            self.table_movimientos.setItem(row, 1, QTableWidgetItem(mov['fecha_hora'].strftime('%Y-%m-%d %H:%M')))
+            item_fecha = QTableWidgetItem(mov['fecha_hora'].strftime('%Y-%m-%d %H:%M'))
+            item_fecha.setData(Qt.UserRole, mov['id'])
+            self.table_movimientos.setItem(row, 0, item_fecha)
+            self.table_movimientos.item(row, 0).setTextAlignment(Qt.AlignCenter)
             
             item_tipo = QTableWidgetItem(mov['tipo'])
             if mov['tipo'] == 'Ingreso':
-                item_tipo.setForeground(QColor("#198754")) # Verde
+                item_tipo.setForeground(QColor("#198754"))
             else:
-                item_tipo.setForeground(QColor("#dc3545")) # Rojo
-            self.table_movimientos.setItem(row, 2, item_tipo)
+                item_tipo.setForeground(QColor("#dc3545"))
+            self.table_movimientos.setItem(row, 1, item_tipo)
+            self.table_movimientos.item(row, 1).setTextAlignment(Qt.AlignCenter)
             
-            self.table_movimientos.setItem(row, 3, QTableWidgetItem(mov['categoria']))
-            self.table_movimientos.setItem(row, 4, QTableWidgetItem(mov['concepto']))
-            self.table_movimientos.setItem(row, 5, QTableWidgetItem(f"${mov['monto']:.2f}"))
-            self.table_movimientos.setItem(row, 6, QTableWidgetItem(mov['username']))
+            self.table_movimientos.setItem(row, 2, QTableWidgetItem(mov['categoria']))
+            self.table_movimientos.setItem(row, 3, QTableWidgetItem(mov['concepto']))
+            
+            self.table_movimientos.setItem(row, 4, QTableWidgetItem(self.format_money(mov['monto'])))
+            self.table_movimientos.item(row, 4).setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+            
+            self.table_movimientos.setItem(row, 5, QTableWidgetItem(mov['username']))
             
         self.calcular_totales()
 
     def calcular_totales(self):
-        # Calcular Ingresos
+        # Obtener el monto inicial de la sesión
+        query_monto_inicial = "SELECT monto_inicial FROM sesiones_caja WHERE id = %s"
+        res_inicial = self.db.execute_query(query_monto_inicial, (self.sesion_id,))
+        monto_inicial_sesion = float(res_inicial[0]['monto_inicial']) if res_inicial else 0.0
+
+        # Totales SOLO de la sesión actual
         query_ingresos = """
-            SELECT COALESCE(SUM(m.monto), 0) as total
-            FROM movimientos_caja m 
-            JOIN sesiones_caja s ON m.sesion_id = s.id 
-            WHERE m.tipo = 'Ingreso' AND s.caja_id = %s
+            SELECT COALESCE(SUM(monto), 0) as total
+            FROM movimientos_caja 
+            WHERE tipo = 'Ingreso' AND sesion_id = %s
         """
-        res_ing = self.db.execute_query(query_ingresos, (self.caja_id,))
+        res_ing = self.db.execute_query(query_ingresos, (self.sesion_id,))
         total_ingresos = float(res_ing[0]['total']) if res_ing else 0.0
         
-        # Calcular Egresos
         query_egresos = """
-            SELECT COALESCE(SUM(m.monto), 0) as total
-            FROM movimientos_caja m 
-            JOIN sesiones_caja s ON m.sesion_id = s.id 
-            WHERE m.tipo = 'Egreso' AND s.caja_id = %s
+            SELECT COALESCE(SUM(monto), 0) as total
+            FROM movimientos_caja 
+            WHERE tipo = 'Egreso' AND sesion_id = %s
         """
-        res_egr = self.db.execute_query(query_egresos, (self.caja_id,))
+        res_egr = self.db.execute_query(query_egresos, (self.sesion_id,))
         total_egresos = float(res_egr[0]['total']) if res_egr else 0.0
         
-        saldo = total_ingresos - total_egresos
+        # Saldo actual de la sesión = Monto Inicial de la Sesión + Ingresos - Egresos
+        saldo = monto_inicial_sesion + total_ingresos - total_egresos
         
         # Actualizar Dashboard
-        self.lbl_ingresos_val.setText(f"$ {total_ingresos:,.2f}")
-        self.lbl_egresos_val.setText(f"$ {total_egresos:,.2f}")
-        self.lbl_saldo_val.setText(f"$ {saldo:,.2f}")
+        self.lbl_inicial_sesion_val.setText(self.format_money(monto_inicial_sesion)) # Nuevo
+        self.lbl_ingresos_val.setText(self.format_money(total_ingresos))
+        self.lbl_egresos_val.setText(self.format_money(total_egresos))
+        self.lbl_saldo_val.setText(self.format_money(saldo))
 
     def guardar_movimiento(self):
         if not self.sesion_id:
@@ -418,19 +541,22 @@ class MainWindow(QMainWindow):
             return
 
         try:
-            # Insertar usando el esquema correcto: sesion_id, fecha_hora, concepto
+            # CORRECCIÓN: Añadir usuario_id a la consulta
             query = """
-                INSERT INTO movimientos_caja (sesion_id, categoria_id, tipo, concepto, monto, fecha_hora)
-                VALUES (%s, %s, %s, %s, %s, NOW())
+                INSERT INTO movimientos_caja (sesion_id, usuario_id, caja_id, categoria_id, tipo, concepto, monto, fecha_hora)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())
             """
-            params = (self.sesion_id, categoria_id, tipo, concepto, monto)
+            params = (self.sesion_id, self.usuario_id, self.caja_id, categoria_id, tipo, concepto, monto)
             
-            self.db.execute_query(query, params)
-            logging.info(f"[MAIN_WINDOW] Movimiento registrado por '{self.username}': {tipo} de ${monto} en categoría ID {categoria_id}.")
+            result = self.db.execute_query(query, params)
             
-            QMessageBox.information(self, "Éxito", "Movimiento registrado correctamente.")
-            self.limpiar_form_movimiento()
-            self.cargar_movimientos()
+            # CORRECCIÓN: Mover el logging para que solo se ejecute si no hay error
+            if result is not None:
+                logging.info(f"[MAIN_WINDOW] Movimiento registrado por '{self.username}': {tipo} de {self.format_money(monto)} en categoría ID {categoria_id}.")
+                self.limpiar_form_movimiento()
+                self.cargar_movimientos()
+            else:
+                QMessageBox.critical(self, "Error de Base de Datos", "No se pudo guardar el movimiento.")
 
         except Exception as e:
             QMessageBox.critical(self, "Error de Base de Datos", f"No se pudo guardar el movimiento: {e}")
@@ -442,6 +568,10 @@ class MainWindow(QMainWindow):
         self.le_descripcion.setFocus()
 
     def mostrar_menu_contextual(self, position):
+        selected_items = self.table_movimientos.selectedItems()
+        if not selected_items:
+            return
+
         menu = QMenu()
         
         action_eliminar = QAction("Eliminar Movimiento", self)
@@ -461,14 +591,14 @@ class MainWindow(QMainWindow):
         if not selected: return
         
         row = selected[0].row()
-        mov_id = self.table_movimientos.item(row, 0).text()
-        concepto = self.table_movimientos.item(row, 4).text()
+        mov_id = self.table_movimientos.item(row, 0).data(Qt.UserRole)
+        concepto = self.table_movimientos.item(row, 3).text()
         
         confirm = QMessageBox.question(self, "Confirmar Eliminación", 
                                        f"¿Está seguro de eliminar el movimiento ID {mov_id}?\nConcepto: {concepto}",
-                                       QMessageBox.Yes | QMessageBox.No)
+                                       QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         
-        if confirm == QMessageBox.Yes:
+        if confirm == QMessageBox.StandardButton.Yes:
             try:
                 query = "DELETE FROM movimientos_caja WHERE id = %s"
                 self.db.execute_query(query, (mov_id,))
@@ -483,9 +613,8 @@ class MainWindow(QMainWindow):
         if not selected: return
         
         row = selected[0].row()
-        mov_id = self.table_movimientos.item(row, 0).text()
+        mov_id = self.table_movimientos.item(row, 0).data(Qt.UserRole)
         
-        # Obtener datos completos del movimiento para el reporte
         query = """
             SELECT m.id, m.fecha_hora, m.tipo, c.nombre as categoria, m.concepto, m.monto
             FROM movimientos_caja m
@@ -496,15 +625,24 @@ class MainWindow(QMainWindow):
         
         if data:
             mov_data = data[0]
-            filepath, _ = QFileDialog.getSaveFileName(self, "Guardar Vale", f"vale_{mov_id}.pdf", "PDF (*.pdf)")
-            if filepath:
-                try:
-                    generar_vale_pdf(mov_data, filepath)
-                    QMessageBox.information(self, "Éxito", f"Vale generado en:\n{filepath}")
-                    logging.info(f"[MAIN_WINDOW] Vale generado para movimiento ID {mov_id}.")
-                except Exception as e:
-                    QMessageBox.critical(self, "Error", f"Error generando PDF: {e}")
-                    logging.error(f"[MAIN_WINDOW] Error generando vale PDF: {e}")
+            
+            reports_dir = "reports"
+            os.makedirs(reports_dir, exist_ok=True)
+            
+            fecha_str = mov_data['fecha_hora'].strftime('%Y-%m-%d')
+            caja_nombre_safe = "".join(x for x in self.caja_nombre if x.isalnum() or x in " -_").rstrip()
+            filename = f"vale_{mov_id}_{fecha_str}_{caja_nombre_safe}.pdf"
+            filepath = os.path.join(reports_dir, filename)
+
+            try:
+                # Pasar parámetros de empresa (moneda)
+                parametros = {'simbolo_moneda': self.simbolo_moneda}
+                generar_vale_pdf(mov_data, filepath, parametros=parametros)
+                logging.info(f"[MAIN_WINDOW] Vale generado para movimiento ID {mov_id} en {filepath}.")
+                os.startfile(filepath)
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Error generando o abriendo PDF: {e}")
+                logging.error(f"[MAIN_WINDOW] Error generando/abriendo vale PDF: {e}")
 
     def mostrar_dialogo_reporte(self):
         dialog = QDialog(self)
@@ -553,51 +691,76 @@ class MainWindow(QMainWindow):
                 logging.warning("[MAIN_WINDOW] Reporte vacío: No hay datos en el rango seleccionado.")
                 return
 
-            filepath, _ = QFileDialog.getSaveFileName(self, "Guardar Reporte", f"reporte_{start_date}_a_{end_date}.pdf", "PDF (*.pdf)")
+            reports_dir = "reports"
+            os.makedirs(reports_dir, exist_ok=True)
+            caja_nombre_safe = "".join(x for x in self.caja_nombre if x.isalnum() or x in " -_").rstrip()
+            filename = f"reporte-general_{start_date}_a_{end_date}_{caja_nombre_safe}.pdf"
+            filepath = os.path.join(reports_dir, filename)
             
-            if filepath:
-                info_extra = {
-                    'desde': start_date,
-                    'hasta': end_date,
-                    'usuario': self.username
-                }
-                
-                generar_listado_pdf(
-                    movimientos_list=data,
-                    info_extra=info_extra,
-                    output_path=filepath
-                )
-                
-                QMessageBox.information(self, "Éxito", f"Reporte generado en:\n{filepath}")
-                logging.info(f"[MAIN_WINDOW] Reporte PDF generado exitosamente en {filepath}.")
-            else:
-                logging.warning("[MAIN_WINDOW] Generación de reporte cancelada por el usuario.")
+            info_extra = {
+                'desde': start_date,
+                'hasta': end_date,
+                'usuario': self.username
+            }
             
+            # Pasar parámetros de empresa (moneda)
+            parametros = {'simbolo_moneda': self.simbolo_moneda}
+            generar_listado_pdf(
+                movimientos_list=data,
+                info_extra=info_extra,
+                output_path=filepath,
+                parametros=parametros
+            )
+            
+            logging.info(f"[MAIN_WINDOW] Reporte PDF generado exitosamente en {filepath}.")
+            os.startfile(filepath)
             dialog.close()
+
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo generar el reporte: {e}")
             logging.error(f"[MAIN_WINDOW] Error al generar reporte: {e}", exc_info=True)
+
+    def abrir_report_viewer(self):
+        logging.info("[MAIN_WINDOW] Abriendo visor de reportes.")
+        dialog = ReportViewerWindow(self.rol, self.caja_nombre, self)
+        dialog.exec()
+        logging.info("[MAIN_WINDOW] Cerrado visor de reportes.")
+
+    def abrir_crud_empresa(self):
+        logging.info("[MAIN_WINDOW] Abriendo configuración de empresa.")
+        dialog = CrudEmpresa(self.db, self)
+        dialog.exec()
+        # Recargar parámetros por si cambiaron (ej. símbolo de moneda)
+        self.cargar_parametros_empresa()
+        self.load_initial_data() # Refrescar UI con nuevo símbolo
 
     def abrir_crud_usuarios(self):
         logging.info("[MAIN_WINDOW] Abriendo ventana de gestión de usuarios.")
         dialog = CrudUsuarios(self.db, self)
         dialog.exec()
-        logging.info("[MAIN_WINDOW] Cerrada ventana de gestión de usuarios.")
-        self.load_initial_data()
+        self.load_initial_data() 
 
     def abrir_crud_cajas(self):
         logging.info("[MAIN_WINDOW] Abriendo ventana de gestión de cajas.")
         dialog = CrudCajas(self.db, self)
         dialog.exec()
-        logging.info("[MAIN_WINDOW] Cerrada ventana de gestión de cajas.")
         self.load_initial_data()
 
     def abrir_crud_categorias(self):
         logging.info("[MAIN_WINDOW] Abriendo ventana de gestión de categorías.")
         dialog = CrudCategorias(self.db, self)
         dialog.exec()
-        logging.info("[MAIN_WINDOW] Cerrada ventana de gestión de categorías.")
         self.load_initial_data()
+
+    def abrir_modal_cierre(self):
+        logging.info("[MAIN_WINDOW] Abriendo modal de cierre de caja.")
+        # Pasar el símbolo de moneda al modal de cierre
+        dialog = ModalCierre(self.db, self.sesion_id, self.simbolo_moneda, self.caja_nombre, self.username, self)
+        result = dialog.exec()
+        
+        if result == QDialog.Accepted:
+            logging.info("[MAIN_WINDOW] Caja cerrada exitosamente. Cerrando aplicación.")
+            self.close()
 
     def closeEvent(self, event):
         logging.info("[MAIN_WINDOW] Solicitud de cierre de la aplicación.")

@@ -7,8 +7,8 @@
 #  Ver |  Fecha   |     Autor              |   D e s c r i p c i ó n
 # -----------------------------------------------------------------------------
 #   01 |07/03/2026| Antigravity/Addy López |Versión Inicial del Programa.
-#   02 |07/03/2026| Antigravity/Addy López |Implementación de bcrypt para contraseñas.
-#   03 |07/03/2026| Antigravity/Addy López |Implementación de Sistema de Logs.
+#   ...
+#   04 |07/03/2026| Antigravity/Addy López |Mejora de UX en el botón de Ingresar.
 # *****************************************************************************
 #
 from PySide6.QtWidgets import (
@@ -30,12 +30,12 @@ class LoginWindow(QDialog):
         self.btn_ingresar = self.btn_salir = self.usuario_id = self.rol = self.caja_id = self.caja_nombre = None
         
         self.setWindowTitle("Iniciar Sesión")
-        self.resize(300, 200)
+        self.resize(300, 220)
         self.setModal(True)
-        # Prevent closing with X to force authentication
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         
         self.setup_ui()
+        self.actualizar_estado_boton() # Establecer estado inicial del botón
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
@@ -64,12 +64,23 @@ class LoginWindow(QDialog):
         
         btn_layout = QHBoxLayout()
         self.btn_ingresar = QPushButton("Ingresar")
-        self.btn_ingresar.setStyleSheet("background-color: #0d6efd; color: white; font-weight: bold;")
+        self.btn_ingresar.setStyleSheet("""
+            QPushButton {
+                background-color: #0d6efd; 
+                color: white; 
+                font-weight: bold;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+            QPushButton:disabled {
+                background-color: #6c757d;
+                color: #dee2e6;
+            }
+        """)
         self.btn_ingresar.clicked.connect(self.verificar_credenciales)
-        self.btn_ingresar.setDefault(True) # Hace que Enter accione este botón
         
         self.btn_salir = QPushButton("Salir")
-        self.btn_salir.setAutoDefault(False) # Evita que tome el foco de Enter por accidente
+        self.btn_salir.setAutoDefault(False)
         self.btn_salir.clicked.connect(self.reject)
         
         btn_layout.addStretch()
@@ -77,6 +88,29 @@ class LoginWindow(QDialog):
         btn_layout.addWidget(self.btn_ingresar)
         
         layout.addLayout(btn_layout)
+
+        # --- Conexiones de señales para UX ---
+        # Al presionar Enter en usuario, saltar a contraseña
+        self.le_usuario.returnPressed.connect(self.le_password.setFocus)
+        
+        # Actualizar estado del botón cuando el texto cambie en cualquiera de los campos
+        self.le_usuario.textChanged.connect(self.actualizar_estado_boton)
+        self.le_password.textChanged.connect(self.actualizar_estado_boton)
+
+    def actualizar_estado_boton(self):
+        """
+        Habilita o deshabilita el botón 'Ingresar' basado en si los campos
+        de usuario y contraseña tienen texto.
+        """
+        usuario_ok = len(self.le_usuario.text().strip()) > 0
+        password_ok = len(self.le_password.text().strip()) > 0
+        
+        if usuario_ok and password_ok:
+            self.btn_ingresar.setEnabled(True)
+            self.btn_ingresar.setDefault(True)
+        else:
+            self.btn_ingresar.setEnabled(False)
+            self.btn_ingresar.setDefault(False)
 
     def cargar_cajas(self):
         try:
@@ -107,7 +141,6 @@ class LoginWindow(QDialog):
             logging.warning("[LOGIN] Intento de login fallido: No hay caja seleccionada.")
             return
             
-        # 1. Buscar al usuario solo por su nombre de usuario
         query = "SELECT id, username, password_hash, rol FROM usuarios WHERE username = %s AND activo = TRUE"
         res = self.db.execute_query(query, (usr,))
         
@@ -115,14 +148,11 @@ class LoginWindow(QDialog):
             user_data = res[0]
             stored_hash = user_data['password_hash']
             
-            # 2. Verificar la contraseña ingresada contra el hash almacenado
-            # El hash de la BD puede ser string, bcrypt necesita bytes.
             if isinstance(stored_hash, str):
                 stored_hash = stored_hash.encode('utf-8')
                 
             try:
                 if bcrypt.checkpw(pwd.encode('utf-8'), stored_hash):
-                    # Contraseña correcta: Guardar datos y aceptar el diálogo
                     self.usuario_id = user_data['id']
                     self.username = user_data['username']
                     self.rol = user_data['rol']
@@ -131,7 +161,7 @@ class LoginWindow(QDialog):
                     
                     logging.info(f"[LOGIN] Usuario '{usr}' autenticado correctamente en caja '{self.caja_nombre}'.")
                     self.accept()
-                    return # Salir de la función
+                    return
                 else:
                     logging.warning(f"[LOGIN] Contraseña incorrecta para usuario '{usr}'.")
             except ValueError as e:
@@ -140,5 +170,4 @@ class LoginWindow(QDialog):
         else:
             logging.warning(f"[LOGIN] Usuario no encontrado o inactivo: '{usr}'.")
 
-        # Si el usuario no se encontró o la contraseña no coincidió, mostrar error.
         QMessageBox.critical(self, "Acceso Denegado", "Usuario o contraseña incorrectos.")

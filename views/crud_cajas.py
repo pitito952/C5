@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QTableWidget, QTableWidgetItem,
-    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget
+    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget, QApplication
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
@@ -11,9 +11,15 @@ class CrudCajas(QDialog):
         super().__init__(parent)
         logging.info("[CRUD_CAJAS] Entrando al programa (Gestión de Cajas).")
         self.db = db_connection
+        self.current_caja_id = None
         self.setWindowTitle("Gestión de Cajas")
-        self.resize(600, 400)
         
+        if parent:
+            self.resize(int(parent.width() * 0.7), int(parent.height() * 0.7))
+            self.move(parent.geometry().center() - self.rect().center())
+        else:
+            self.resize(600, 400)
+
         self.setup_ui()
         self.load_data()
 
@@ -28,17 +34,12 @@ class CrudCajas(QDialog):
         form_widget = QWidget()
         form_layout = QFormLayout(form_widget)
         
-        self.le_id = QLineEdit()
-        self.le_id.setReadOnly(True)
-        self.le_id.setPlaceholderText("ID Auto")
-        
         self.le_nombre = QLineEdit()
         self.le_descripcion = QLineEdit()
         
         self.cb_estado = QComboBox()
         self.cb_estado.addItems(["Activa", "Inactiva"])
 
-        form_layout.addRow("ID:", self.le_id)
         form_layout.addRow("Nombre Caja:", self.le_nombre)
         form_layout.addRow("Descripción:", self.le_descripcion)
         form_layout.addRow("Estado:", self.cb_estado)
@@ -63,8 +64,8 @@ class CrudCajas(QDialog):
 
         # Tabla
         self.table = QTableWidget()
-        self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["ID", "Nombre", "Descripción", "Estado"])
+        self.table.setColumnCount(3) # ID Column removed
+        self.table.setHorizontalHeaderLabels(["Nombre", "Descripción", "Estado"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -78,14 +79,12 @@ class CrudCajas(QDialog):
             
             self.table.setRowCount(len(registros))
             for row_idx, row_data in enumerate(registros):
-                items = [
-                    str(row_data['id']),
-                    row_data['nombre'],
-                    str(row_data['descripcion']),
-                    row_data['estado']
-                ]
-                for col_idx, val in enumerate(items):
-                    self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+                item_nombre = QTableWidgetItem(row_data['nombre'])
+                item_nombre.setData(Qt.UserRole, row_data['id'])
+                self.table.setItem(row_idx, 0, item_nombre)
+
+                self.table.setItem(row_idx, 1, QTableWidgetItem(str(row_data['descripcion'])))
+                self.table.setItem(row_idx, 2, QTableWidgetItem(row_data['estado']))
         except Exception as e:
             logging.error(f"[CRUD_CAJAS] Error cargando datos: {e}")
 
@@ -94,20 +93,21 @@ class CrudCajas(QDialog):
         if not selected: return
         
         row = selected[0].row()
-        self.le_id.setText(self.table.item(row, 0).text())
-        self.le_nombre.setText(self.table.item(row, 1).text())
-        self.le_descripcion.setText(self.table.item(row, 2).text())
-        self.cb_estado.setCurrentText(self.table.item(row, 3).text())
+        self.current_caja_id = self.table.item(row, 0).data(Qt.UserRole)
+        
+        self.le_nombre.setText(self.table.item(row, 0).text())
+        self.le_descripcion.setText(self.table.item(row, 1).text())
+        self.cb_estado.setCurrentText(self.table.item(row, 2).text())
 
     def limpiar_form(self):
-        self.le_id.clear()
+        self.current_caja_id = None
         self.le_nombre.clear()
         self.le_descripcion.clear()
         self.cb_estado.setCurrentIndex(0)
         self.table.clearSelection()
 
     def guardar_caja(self):
-        cid = self.le_id.text().strip()
+        cid = self.current_caja_id
         nombre = self.le_nombre.text().strip()
         desc = self.le_descripcion.text().strip()
         estado = self.cb_estado.currentText()
@@ -137,13 +137,12 @@ class CrudCajas(QDialog):
             logging.error(f"[CRUD_CAJAS] Error guardando caja: {e}")
 
     def eliminar_caja(self):
-        cid = self.le_id.text().strip()
+        cid = self.current_caja_id
         if not cid:
             QMessageBox.warning(self, "Selección Requerida", "Por favor, seleccione una caja de la tabla para eliminar.")
             return
 
         try:
-            # Verificar si la caja está en uso
             query_check = "SELECT COUNT(*) as count FROM movimientos_caja WHERE caja_id = %s"
             result = self.db.execute_query(query_check, (cid,))
             
@@ -153,13 +152,11 @@ class CrudCajas(QDialog):
                 logging.warning(f"[CRUD_CAJAS] Intento fallido de eliminar caja ID {cid}: Tiene movimientos asociados.")
                 return
 
-            # Pedir confirmación
             confirm = QMessageBox.question(self, "Confirmar Eliminación",
                                            f"¿Está seguro de que desea eliminar la caja ID {cid}?",
                                            QMessageBox.Yes | QMessageBox.No)
 
             if confirm == QMessageBox.Yes:
-                # Eliminar
                 query_delete = "DELETE FROM configuracion_caja WHERE id = %s"
                 self.db.execute_query(query_delete, (cid,))
                 logging.info(f"[CRUD_CAJAS] Caja ID {cid} eliminada exitosamente.")

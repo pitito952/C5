@@ -1,0 +1,279 @@
+2026-03-10 09:41:24 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:41:24 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:41:24 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:41:24 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:41:31 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 09:41:31 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 09:41:31 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 09:41:32 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 09:41:32 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 09:41:39 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 09:41:39 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 09:45:42 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:45:42 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:45:42 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:45:42 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:45:47 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 09:45:47 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 09:45:47 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 09:45:48 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 09:45:48 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 09:45:51 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 09:45:51 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 09:46:58 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:46:58 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:46:58 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:46:58 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:47:04 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 09:47:04 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 09:47:04 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 09:47:04 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 09:47:04 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 09:47:08 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 09:47:08 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 09:47:17 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 09:47:20 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 09:47:33 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:47:33 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:47:33 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:47:33 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:47:38 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 09:47:38 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 09:47:38 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 09:47:38 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 09:47:38 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 09:47:42 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 09:47:42 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 09:48:06 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 09:48:08 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 09:51:08 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:51:09 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:51:09 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:51:09 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:51:12 - INFO - [MAIN] Login cancelado o cerrado por el usuario. Saliendo.
+2026-03-10 09:53:33 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:53:33 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:53:33 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:53:33 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:53:41 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 09:53:41 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 09:53:41 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 09:53:42 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 09:53:42 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 09:53:44 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 09:53:44 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 09:54:37 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 09:54:38 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 09:54:58 - INFO - [MAIN] Entrando al programa.
+2026-03-10 09:54:59 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 09:54:59 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 09:54:59 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 09:55:05 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 09:55:05 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 09:55:05 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 09:55:05 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 09:55:05 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 09:55:07 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 09:55:07 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 09:55:21 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 09:55:47 - INFO - [MAIN_WINDOW] Movimiento ID 3 eliminado por usuario 'admin'.
+2026-03-10 09:56:41 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 10:04:59 - INFO - [MAIN] Entrando al programa.
+2026-03-10 10:04:59 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 10:04:59 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 10:04:59 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 10:05:05 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 10:05:05 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 10:05:05 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 10:05:05 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 10:05:05 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 10:05:08 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 10:13:54 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 10:19:25 - INFO - [MAIN] Entrando al programa.
+2026-03-10 10:19:25 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 10:19:25 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 10:19:25 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 10:19:32 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 10:19:32 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 10:19:32 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 10:19:32 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 10:19:32 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 10:19:32 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 10:20:00 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 10:21:55 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 10:51:24 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 11:55:04 - INFO - [MAIN] Entrando al programa.
+2026-03-10 11:55:04 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 11:55:04 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 11:55:04 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 11:55:10 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 11:55:10 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 11:55:10 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 11:55:10 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 11:55:10 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-10 11:55:10 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 11:56:37 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 11:58:02 - INFO - [MAIN_WINDOW] Caja cerrada exitosamente. Cerrando aplicación.
+2026-03-10 11:58:02 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 11:58:09 - INFO - [MAIN] Entrando al programa.
+2026-03-10 11:58:10 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 11:58:10 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 11:58:10 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 11:58:16 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 11:58:16 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 11:58:16 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 11:58:16 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 11:58:16 - INFO - [MAIN_WINDOW] No hay sesión abierta para la caja 1. Creando nueva sesión automática.
+2026-03-10 11:58:16 - INFO - [MAIN_WINDOW] Nueva sesión creada exitosamente. ID: 2
+2026-03-10 11:58:16 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 11:58:57 - ERROR - [CONNECTION] Error ejecutando query: 
+                INSERT INTO movimientos_caja (sesion_id, categoria_id, tipo, concepto, monto, fecha_hora)
+                VALUES (%s, %s, %s, %s, %s, NOW())
+            . Error: 1364 (HY000): Field 'usuario_id' doesn't have a default value
+2026-03-10 11:58:57 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 3,250.00 en categoría ID 5.
+2026-03-10 11:59:22 - ERROR - [CONNECTION] Error ejecutando query: 
+                INSERT INTO movimientos_caja (sesion_id, categoria_id, tipo, concepto, monto, fecha_hora)
+                VALUES (%s, %s, %s, %s, %s, NOW())
+            . Error: 1364 (HY000): Field 'usuario_id' doesn't have a default value
+2026-03-10 11:59:22 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 3,400.00 en categoría ID 4.
+2026-03-10 11:59:38 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-10 hasta 2026-03-10 para la caja ID 1.
+2026-03-10 11:59:39 - WARNING - [MAIN_WINDOW] Reporte vacío: No hay datos en el rango seleccionado.
+2026-03-10 12:06:08 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 12:06:22 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 12:06:22 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 12:06:31 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 12:06:38 - INFO - [MAIN_WINDOW] Abriendo configuración de empresa.
+2026-03-10 12:06:38 - INFO - [CRUD_EMPRESA] Entrando al programa (Configuración de Empresa).
+2026-03-10 12:06:45 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 12:06:48 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-10 12:06:48 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-10 12:06:53 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 12:06:56 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-10 12:06:56 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-10 12:06:58 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 12:07:01 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-10 12:07:01 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-10 12:07:06 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 12:07:10 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 12:10:41 - INFO - [MAIN] Entrando al programa.
+2026-03-10 12:10:42 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 12:10:42 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 12:10:42 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 12:11:01 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 12:11:01 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 12:11:01 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 12:11:01 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 12:11:01 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 2
+2026-03-10 12:11:01 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 12:11:09 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 12:11:09 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 12:11:11 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 12:11:22 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-10 hasta 2026-03-10 para la caja ID 1.
+2026-03-10 12:11:23 - WARNING - [MAIN_WINDOW] Reporte vacío: No hay datos en el rango seleccionado.
+2026-03-10 12:12:32 - ERROR - [CONNECTION] Error ejecutando query: 
+                INSERT INTO movimientos_caja (sesion_id, usuario_id, categoria_id, tipo, concepto, monto, fecha_hora)
+                VALUES (%s, %s, %s, %s, %s, %s, NOW())
+            . Error: 1364 (HY000): Field 'caja_id' doesn't have a default value
+2026-03-10 12:12:47 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 14:03:48 - INFO - [MAIN] Entrando al programa.
+2026-03-10 14:03:49 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 14:03:49 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 14:03:49 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 14:03:55 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 14:03:55 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 14:03:55 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 14:03:55 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 14:03:55 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 2
+2026-03-10 14:03:55 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 14:04:17 - ERROR - [CONNECTION] Error ejecutando query: 
+                INSERT INTO movimientos_caja (sesion_id, usuario_id, caja_id, categoria_id, tipo, concepto, monto, fecha_hora)
+                VALUES (%s, %s, %s, %s, %s, %s, NOW())
+            . Error: Not all parameters were used in the SQL statement
+2026-03-10 14:04:22 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 14:10:17 - INFO - [MAIN] Entrando al programa.
+2026-03-10 14:10:17 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 14:10:17 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 14:10:17 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 14:10:28 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 14:10:28 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 14:10:28 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 14:10:28 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 14:10:28 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 2
+2026-03-10 14:10:28 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 14:10:43 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 2,400.00 en categoría ID 4.
+2026-03-10 14:11:42 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Ingreso de 1,000.00 en categoría ID 8.
+2026-03-10 16:53:50 - INFO - [MAIN] Entrando al programa.
+2026-03-10 16:53:51 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 16:53:51 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 16:53:51 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 16:53:58 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 16:53:58 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 16:53:58 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 16:53:58 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 16:53:58 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 2
+2026-03-10 16:53:58 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 18:24:47 - INFO - [MAIN] Entrando al programa.
+2026-03-10 18:24:47 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 18:24:47 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 18:24:47 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 18:24:54 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 18:24:54 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 18:24:54 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 18:24:54 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 18:24:54 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 2
+2026-03-10 18:24:54 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 18:25:00 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-10 18:25:00 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-10 18:25:04 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 19:09:10 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 19:09:32 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 19:09:47 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 19:10:38 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 19:11:38 - INFO - [MODAL_CIERRE] Reporte de cierre generado en reports\cierre_sesion_2_2026-03-10_Caja General.pdf
+2026-03-10 19:12:00 - INFO - [MAIN_WINDOW] Caja cerrada exitosamente. Cerrando aplicación.
+2026-03-10 19:12:00 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 19:12:08 - INFO - [MAIN] Entrando al programa.
+2026-03-10 19:12:09 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 19:12:09 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 19:12:09 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 19:12:15 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 19:12:15 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 19:12:15 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 19:12:15 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 19:12:15 - INFO - [MAIN_WINDOW] No hay sesión abierta para la caja 1. Creando nueva sesión automática.
+2026-03-10 19:12:15 - INFO - [MAIN_WINDOW] Nueva sesión creada exitosamente. ID: 3
+2026-03-10 19:12:15 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 19:12:24 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-10 19:12:24 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-10 19:12:29 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-10 19:12:38 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 19:13:20 - INFO - [MAIN] Entrando al programa.
+2026-03-10 19:13:21 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 19:13:21 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 19:13:21 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 19:13:27 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 19:13:27 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 19:13:27 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 19:13:27 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 19:13:27 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 3
+2026-03-10 19:13:27 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 19:13:46 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 2,670.00 en categoría ID 5.
+2026-03-10 19:14:05 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 500.00 en categoría ID 4.
+2026-03-10 19:14:08 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 19:14:46 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Ingreso de 2,200.00 en categoría ID 8.
+2026-03-10 19:14:50 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-10 19:14:57 - INFO - [MODAL_CIERRE] Reporte de cierre generado en reports\cierre_sesion_3_2026-03-10_Caja General.pdf
+2026-03-10 19:15:08 - INFO - [MAIN_WINDOW] Caja cerrada exitosamente. Cerrando aplicación.
+2026-03-10 19:15:08 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-10 19:15:15 - INFO - [MAIN] Entrando al programa.
+2026-03-10 19:15:15 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-10 19:15:15 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-10 19:15:15 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-10 19:15:21 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-10 19:15:21 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-10 19:15:21 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-10 19:15:21 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-10 19:15:21 - INFO - [MAIN_WINDOW] No hay sesión abierta para la caja 1. Creando nueva sesión automática.
+2026-03-10 19:15:21 - INFO - [MAIN_WINDOW] Nueva sesión creada exitosamente. ID: 4
+2026-03-10 19:15:21 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-10 19:15:29 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.

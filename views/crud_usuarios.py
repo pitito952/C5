@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QTableWidget, QTableWidgetItem,
-    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget
+    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget, QApplication
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
@@ -12,9 +12,16 @@ class CrudUsuarios(QDialog):
         super().__init__(parent)
         logging.info("[CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).")
         self.db = db_connection
+        self.current_user_id = None # Para guardar el ID del usuario seleccionado
         self.setWindowTitle("Gestión de Usuarios")
-        self.resize(700, 500)
         
+        # Centrar y redimensionar
+        if parent:
+            self.resize(int(parent.width() * 0.7), int(parent.height() * 0.7))
+            self.move(parent.geometry().center() - self.rect().center())
+        else:
+            self.resize(700, 500)
+
         self.setup_ui()
         self.load_data()
 
@@ -23,16 +30,11 @@ class CrudUsuarios(QDialog):
 
         title = QLabel("Administración de Usuarios")
         title.setFont(QFont("Arial", 14, QFont.Bold))
-        title.setAlignment(Qt.AlignCenter)
-        layout.addWidget(title)
+        layout.addWidget(title, alignment=Qt.AlignCenter)
 
         # Formulario
         form_widget = QWidget()
         form_layout = QFormLayout(form_widget)
-        
-        self.le_id = QLineEdit()
-        self.le_id.setReadOnly(True)
-        self.le_id.setPlaceholderText("ID Auto")
         
         self.le_username = QLineEdit()
         self.le_password = QLineEdit()
@@ -45,7 +47,6 @@ class CrudUsuarios(QDialog):
         self.cb_estado = QComboBox()
         self.cb_estado.addItems(["Activo", "Inactivo"])
 
-        form_layout.addRow("ID:", self.le_id)
         form_layout.addRow("Nombre de Usuario:", self.le_username)
         form_layout.addRow("Contraseña:", self.le_password)
         form_layout.addRow("Rol:", self.cb_rol)
@@ -71,8 +72,8 @@ class CrudUsuarios(QDialog):
 
         # Tabla
         self.table = QTableWidget()
-        self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["ID", "Username", "Rol", "Estado", "Último Acceso"])
+        self.table.setColumnCount(4) # ID Column removed
+        self.table.setHorizontalHeaderLabels(["Username", "Rol", "Estado", "Último Acceso"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -92,16 +93,14 @@ class CrudUsuarios(QDialog):
                 estado = "Activo" if row_data['activo'] else "Inactivo"
                 acceso = str(row_data['ultimo_acceso']) if row_data['ultimo_acceso'] else "Nunca"
                 
-                items = [
-                    str(row_data['id']),
-                    row_data['username'],
-                    row_data['rol'],
-                    estado,
-                    acceso
-                ]
-                
-                for col_idx, val in enumerate(items):
-                    self.table.setItem(row_idx, col_idx, QTableWidgetItem(val))
+                # Guardar ID en el primer item, pero no mostrarlo
+                item_username = QTableWidgetItem(row_data['username'])
+                item_username.setData(Qt.UserRole, row_data['id'])
+                self.table.setItem(row_idx, 0, item_username)
+
+                self.table.setItem(row_idx, 1, QTableWidgetItem(row_data['rol']))
+                self.table.setItem(row_idx, 2, QTableWidgetItem(estado))
+                self.table.setItem(row_idx, 3, QTableWidgetItem(acceso))
         except Exception as e:
             logging.error(f"[CRUD_USUARIOS] Error cargando datos: {e}")
 
@@ -110,18 +109,19 @@ class CrudUsuarios(QDialog):
         if not selected: return
         
         row = selected[0].row()
-        self.le_id.setText(self.table.item(row, 0).text())
-        self.le_username.setText(self.table.item(row, 1).text())
+        self.current_user_id = self.table.item(row, 0).data(Qt.UserRole) # Obtener ID oculto
+        
+        self.le_username.setText(self.table.item(row, 0).text())
         self.le_password.clear()
         
-        rol = self.table.item(row, 2).text()
+        rol = self.table.item(row, 1).text()
         self.cb_rol.setCurrentText(rol)
         
-        estado = self.table.item(row, 3).text()
+        estado = self.table.item(row, 2).text()
         self.cb_estado.setCurrentText(estado)
 
     def limpiar_form(self):
-        self.le_id.clear()
+        self.current_user_id = None
         self.le_username.clear()
         self.le_password.clear()
         self.cb_rol.setCurrentIndex(0)
@@ -129,7 +129,7 @@ class CrudUsuarios(QDialog):
         self.table.clearSelection()
 
     def guardar_usuario(self):
-        uid = self.le_id.text().strip()
+        uid = self.current_user_id
         username = self.le_username.text().strip()
         pwd = self.le_password.text().strip()
         rol = self.cb_rol.currentText()
@@ -142,11 +142,8 @@ class CrudUsuarios(QDialog):
         try:
             hashed_pwd = None
             if pwd:
-                # Generar hash de la contraseña
                 salt = bcrypt.gensalt()
-                hashed_pwd = bcrypt.hashpw(pwd.encode('utf-8'), salt)
-                # Convertir bytes a string para guardar en MySQL (VARCHAR)
-                hashed_pwd = hashed_pwd.decode('utf-8')
+                hashed_pwd = bcrypt.hashpw(pwd.encode('utf-8'), salt).decode('utf-8')
 
             if uid:
                 # Update
@@ -179,13 +176,12 @@ class CrudUsuarios(QDialog):
             logging.error(f"[CRUD_USUARIOS] Error guardando usuario: {e}")
 
     def eliminar_usuario(self):
-        uid = self.le_id.text().strip()
+        uid = self.current_user_id
         if not uid:
             QMessageBox.warning(self, "Selección Requerida", "Por favor, seleccione un usuario de la tabla para eliminar.")
             return
 
         try:
-            # Verificar si el usuario está en uso
             query_check = "SELECT COUNT(*) as count FROM movimientos_caja WHERE usuario_id = %s"
             result = self.db.execute_query(query_check, (uid,))
             
@@ -195,13 +191,11 @@ class CrudUsuarios(QDialog):
                 logging.warning(f"[CRUD_USUARIOS] Intento fallido de eliminar usuario ID {uid}: Tiene movimientos asociados.")
                 return
 
-            # Pedir confirmación
             confirm = QMessageBox.question(self, "Confirmar Eliminación",
                                            f"¿Está seguro de que desea eliminar al usuario ID {uid}?",
                                            QMessageBox.Yes | QMessageBox.No)
 
             if confirm == QMessageBox.Yes:
-                # Eliminar
                 query_delete = "DELETE FROM usuarios WHERE id = %s"
                 self.db.execute_query(query_delete, (uid,))
                 logging.info(f"[CRUD_USUARIOS] Usuario ID {uid} eliminado exitosamente.")

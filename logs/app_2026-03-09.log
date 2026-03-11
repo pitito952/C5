@@ -1,0 +1,390 @@
+2026-03-09 10:56:51 - INFO - [MAIN] Entrando al programa.
+2026-03-09 10:56:52 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 10:56:52 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 10:56:52 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 10:56:59 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 10:56:59 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 10:56:59 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 10:56:59 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 10:56:59 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:10:51 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 11:17:34 - INFO - [MAIN] Entrando al programa.
+2026-03-09 11:17:34 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 11:17:34 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 11:17:34 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 11:17:42 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 11:17:42 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 11:17:42 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 11:17:42 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 11:17:42 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:17:47 - INFO - [MAIN_WINDOW] Vale generado para movimiento ID 4 en reports\vale_4_2026-03-03_Caja General.pdf.
+2026-03-09 11:19:04 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-09 11:19:04 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-09 11:19:40 - INFO - [REPORT_VIEWER] Abriendo reporte: reports\vale_4_2026-03-03_Caja General.pdf
+2026-03-09 11:19:55 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-09 11:20:45 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-09 11:20:45 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-09 11:20:49 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de usuarios.
+2026-03-09 11:20:49 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:20:52 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-09 11:20:52 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-09 11:20:54 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de cajas.
+2026-03-09 11:20:54 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:20:56 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-09 11:20:56 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-09 11:21:03 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de categorías.
+2026-03-09 11:21:03 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:31:48 - INFO - [MAIN] Entrando al programa.
+2026-03-09 11:31:48 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 11:31:48 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 11:31:48 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 11:44:27 - INFO - [MAIN] Login cancelado o cerrado por el usuario. Saliendo.
+2026-03-09 11:48:11 - INFO - [MAIN] Entrando al programa.
+2026-03-09 11:48:12 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 11:48:12 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 11:48:12 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 11:48:21 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 11:48:21 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 11:48:21 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 11:48:21 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 11:48:21 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:48:52 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-09 11:48:52 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-09 11:49:25 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de usuarios.
+2026-03-09 11:49:25 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:49:27 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-09 11:49:27 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-09 11:49:46 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de cajas.
+2026-03-09 11:49:46 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:49:48 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-09 11:49:48 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-09 11:50:09 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de categorías.
+2026-03-09 11:50:09 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:50:23 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-09 11:50:23 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-09 11:50:25 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-09 11:50:35 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 11:50:43 - INFO - [MAIN] Entrando al programa.
+2026-03-09 11:50:44 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 11:50:44 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 11:50:44 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 11:50:52 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 11:50:52 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 11:50:52 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 11:50:52 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 11:50:52 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 11:51:08 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 12:04:45 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:04:45 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:04:45 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:04:45 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:04:53 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:04:53 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:04:53 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:04:53 - CRITICAL - [MAIN] Error crítico no controlado: 'MainWindow' object has no attribute 'ui'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 50, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 267, in setup_ui
+    self.ui.tbl_documentos.setColumnWidth(indice, ancho)
+    ^^^^^^^
+AttributeError: 'MainWindow' object has no attribute 'ui'
+2026-03-09 12:05:16 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:05:16 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:05:16 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:05:16 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:05:21 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:05:21 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:05:21 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:05:21 - CRITICAL - [MAIN] Error crítico no controlado: 'MainWindow' object has no attribute 'table'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 50, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 267, in setup_ui
+    self.table.setColumnWidth(indice, ancho)
+    ^^^^^^^^^^
+AttributeError: 'MainWindow' object has no attribute 'table'
+2026-03-09 12:05:46 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:05:46 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:05:46 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:05:46 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:05:53 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:05:53 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:05:53 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:05:53 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:05:53 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:07:38 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:07:38 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:07:38 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:07:38 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:07:45 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:07:45 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:07:45 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:07:45 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:07:45 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:07:52 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 12:08:46 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:08:46 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:08:46 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:08:46 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:08:52 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:08:52 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:08:52 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:08:52 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:08:52 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:09:04 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 12:09:42 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:09:42 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:09:42 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:09:42 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:09:49 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:09:49 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:09:49 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:09:49 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:09:49 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:10:34 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:10:34 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:10:34 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:10:34 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:10:39 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:10:39 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:10:39 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:10:39 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:10:39 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:14:44 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:14:44 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:14:44 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:14:44 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:14:51 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:14:51 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:14:51 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:14:51 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:14:51 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:16:11 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:16:11 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:16:11 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:16:11 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:16:18 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:16:18 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:16:18 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:16:18 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:16:18 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:16:26 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 12:16:49 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:16:49 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:16:49 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:16:49 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:16:56 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:16:56 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:16:56 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:16:56 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:16:56 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:17:48 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:17:48 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:17:48 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:17:48 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:17:53 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:17:53 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:17:53 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:17:53 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:17:53 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:30:26 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:30:26 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:30:26 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:30:26 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:30:32 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:30:33 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:30:33 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:30:33 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:30:33 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:31:45 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:31:46 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:31:46 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:31:46 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:31:50 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:31:50 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:31:50 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:31:50 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:31:50 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:32:28 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:32:28 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:32:28 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:32:28 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:32:35 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:32:35 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:32:35 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:32:35 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:32:35 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:33:36 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:33:36 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:33:36 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:33:36 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:33:41 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:33:41 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:33:41 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:33:41 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:33:41 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:34:01 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 12:34:14 - INFO - [MAIN] Entrando al programa.
+2026-03-09 12:34:14 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 12:34:14 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 12:34:14 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 12:34:19 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 12:34:19 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 12:34:19 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 12:34:19 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 12:34:19 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:34:23 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-09 12:34:23 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-09 12:34:26 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de usuarios.
+2026-03-09 12:34:26 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:34:27 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-09 12:34:27 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-09 12:34:29 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de cajas.
+2026-03-09 12:34:29 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:34:31 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-09 12:34:31 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-09 12:34:35 - INFO - [MAIN_WINDOW] Cerrada ventana de gestión de categorías.
+2026-03-09 12:34:35 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 12:34:49 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 14:45:48 - INFO - [MAIN] Entrando al programa.
+2026-03-09 14:45:48 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 14:45:48 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 14:45:48 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 14:45:54 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 14:45:54 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 14:45:54 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 14:45:54 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 14:45:54 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 14:46:02 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 16:48:20 - INFO - [MAIN] Entrando al programa.
+2026-03-09 16:48:20 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 16:48:20 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 16:48:20 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 16:48:27 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 16:48:27 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 16:48:27 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 16:48:27 - CRITICAL - [MAIN] Error crítico no controlado: 'MainWindow' object has no attribute 'abrir_report_viewer'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 51, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 84, in setup_ui
+    view_reports_action.triggered.connect(self.abrir_report_viewer)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MainWindow' object has no attribute 'abrir_report_viewer'
+2026-03-09 16:51:39 - INFO - [MAIN] Entrando al programa.
+2026-03-09 16:51:40 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 16:51:40 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 16:51:40 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 16:51:45 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 16:51:45 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 16:51:45 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 16:51:45 - CRITICAL - [MAIN] Error crítico no controlado: 'MainWindow' object has no attribute 'abrir_report_viewer'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 51, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 84, in setup_ui
+    view_reports_action.triggered.connect(self.abrir_report_viewer)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MainWindow' object has no attribute 'abrir_report_viewer'
+2026-03-09 16:57:12 - INFO - [MAIN] Entrando al programa.
+2026-03-09 16:57:12 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 16:57:12 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 16:57:12 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 16:57:18 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 16:57:18 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 16:57:18 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 16:57:18 - CRITICAL - [MAIN] Error crítico no controlado: 'MainWindow' object has no attribute 'abrir_report_viewer'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 51, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 84, in setup_ui
+    view_reports_action.triggered.connect(self.abrir_report_viewer)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MainWindow' object has no attribute 'abrir_report_viewer'
+2026-03-09 17:02:51 - INFO - [MAIN] Entrando al programa.
+2026-03-09 17:02:51 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 17:02:51 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 17:02:51 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 17:02:57 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 17:02:57 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 17:02:57 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 17:02:57 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 17:02:57 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 17:03:15 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 17:06:08 - INFO - [MAIN] Entrando al programa.
+2026-03-09 17:06:08 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 17:06:08 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 17:06:08 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 17:06:15 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 17:06:15 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 17:06:15 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 17:06:15 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 17:06:15 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 17:09:44 - INFO - [MAIN_WINDOW] Abriendo configuración de empresa.
+2026-03-09 17:09:44 - INFO - [CRUD_EMPRESA] Entrando al programa (Configuración de Empresa).
+2026-03-09 17:10:05 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 17:11:49 - INFO - [MAIN_WINDOW] Abriendo configuración de empresa.
+2026-03-09 17:11:49 - INFO - [CRUD_EMPRESA] Entrando al programa (Configuración de Empresa).
+2026-03-09 17:12:28 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 17:12:56 - INFO - [MAIN_WINDOW] Abriendo ventana del Visor de Reportes.
+2026-03-09 17:12:56 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-09 17:12:56 - ERROR - [REPORT_VIEWER] Error al cargar la lista de reportes: 'MainWindow' object is not iterable
+2026-03-09 17:13:03 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 17:27:43 - INFO - [MAIN] Entrando al programa.
+2026-03-09 17:27:43 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 17:27:43 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 17:27:43 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 17:27:49 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 17:27:49 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 17:27:49 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 17:27:49 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 17:27:49 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 17:28:00 - INFO - [MAIN_WINDOW] Abriendo configuración de empresa.
+2026-03-09 17:28:00 - INFO - [CRUD_EMPRESA] Entrando al programa (Configuración de Empresa).
+2026-03-09 17:28:08 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 17:28:33 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-02 hasta 2026-03-09 para la caja ID 1.
+2026-03-09 17:28:33 - INFO - [MAIN_WINDOW] Reporte PDF generado exitosamente en reports\reporte-general_2026-03-02_a_2026-03-09_Caja General.pdf.
+2026-03-09 17:28:58 - INFO - [MAIN_WINDOW] Vale generado para movimiento ID 1 en reports\vale_1_2026-03-03_Caja General.pdf.
+2026-03-09 17:29:51 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-09 17:29:51 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-09 17:30:10 - INFO - [REPORT_VIEWER] Abriendo reporte: reports\vale_1_2026-03-03_Caja General.pdf
+2026-03-09 17:31:07 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-09 17:31:20 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-02 hasta 2026-03-09 para la caja ID 1.
+2026-03-09 17:31:20 - INFO - [MAIN_WINDOW] Reporte PDF generado exitosamente en reports\reporte-general_2026-03-02_a_2026-03-09_Caja General.pdf.
+2026-03-09 18:08:18 - INFO - [MAIN] Entrando al programa.
+2026-03-09 18:08:18 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 18:08:18 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 18:08:18 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 18:08:25 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 18:08:25 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 18:08:25 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 18:08:25 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 18:08:25 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 18:09:20 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-09 18:10:08 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-09 18:12:11 - INFO - [MAIN] Entrando al programa.
+2026-03-09 18:12:11 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-09 18:12:11 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-09 18:12:11 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-09 18:12:17 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General'.
+2026-03-09 18:12:17 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-09 18:12:17 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-09 18:12:17 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 1
+2026-03-09 18:12:17 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-09 18:12:20 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.

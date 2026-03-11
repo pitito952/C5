@@ -85,6 +85,8 @@ CREATE TABLE IF NOT EXISTS sesiones_caja (
 CREATE TABLE IF NOT EXISTS movimientos_caja (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sesion_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    caja_id INT NOT NULL,
     categoria_id INT NOT NULL,
     fecha_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tipo ENUM('Ingreso', 'Egreso') NOT NULL,
@@ -94,6 +96,8 @@ CREATE TABLE IF NOT EXISTS movimientos_caja (
     monto DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     anulado BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (sesion_id) REFERENCES sesiones_caja(id) ON DELETE RESTRICT,
+    FOREIGN KEY (caja_id) REFERENCES configuracion_caja(id) ON DELETE RESTRICT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE RESTRICT,
     FOREIGN KEY (categoria_id) REFERENCES categorias_movimiento(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
@@ -104,7 +108,10 @@ CREATE TABLE IF NOT EXISTS parametros_control (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo_empresa VARCHAR(3) NOT NULL,
     nombre_empresa VARCHAR(50) NOT NULL,
-    ruta_logo VARCHAR(255) NULL
+    ruta_logo VARCHAR(255) NULL,
+    simbolo_moneda VARCHAR(5),
+    nombre_moneda VARCHAR(50),
+    tasa_cambio DECIMAL(10, 4)
 ) ENGINE=InnoDB;
 
 -- Valores por defecto
