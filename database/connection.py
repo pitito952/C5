@@ -12,12 +12,23 @@
 # *****************************************************************************
 #
 import os
+import sys
 import mysql.connector
 import logging
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 
-load_dotenv()
+def get_base_path():
+    """Obtiene la ruta base para los archivos, compatible con cx_Freeze."""
+    if getattr(sys, 'frozen', False):
+        # Si la aplicación está "congelada", la base es el directorio del ejecutable
+        return os.path.dirname(sys.executable)
+    else:
+        # Si se ejecuta como script normal, la base es el directorio raíz del proyecto
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+BASE_PATH = get_base_path()
+load_dotenv(dotenv_path=os.path.join(BASE_PATH, ".env"))
 
 class DatabaseConnection:
     _instance = None
@@ -40,9 +51,7 @@ class DatabaseConnection:
         """
         try:
             # Asumimos que secret.key está en la raíz del proyecto, un nivel arriba de database/
-            # __file__ es .../database/connection.py -> dirname es .../database -> dirname es .../ (raíz)
-            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            key_path = os.path.join(root_dir, "secret.key")
+            key_path = os.path.join(BASE_PATH, "secret.key")
             
             if os.path.exists(key_path):
                 with open(key_path, "rb") as key_file:

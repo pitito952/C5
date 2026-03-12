@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS configuracion_caja (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     fondo_fijo DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    saldo_inicial DECIMAL(10,2) NULL DEFAULT NULL, -- Nueva columna para el saldo del cierre anterior
     estado ENUM('Activa', 'Inactiva') NOT NULL DEFAULT 'Activa',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;

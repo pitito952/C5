@@ -1,0 +1,236 @@
+2026-03-12 10:15:09 - INFO - [MAIN] Entrando al programa.
+2026-03-12 10:15:09 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 10:15:09 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 10:15:09 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 10:15:21 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 10:15:21 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 10:15:21 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 10:15:21 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-12 10:15:21 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 4
+2026-03-12 10:15:21 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 10:15:31 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-12 10:15:49 - ERROR - [CONNECTION] Error ejecutando query: UPDATE cajas SET saldo_inicial = %s WHERE id = %s. Error: 1146 (42S02): Table 'caja_chica_db.cajas' doesn't exist
+2026-03-12 10:15:49 - INFO - [MODAL_CIERRE] Reporte de cierre generado en reports\cierre_sesion_4_2026-03-12_Caja General 1.pdf
+2026-03-12 10:15:54 - INFO - [MAIN_WINDOW] Caja cerrada exitosamente. Cerrando aplicación.
+2026-03-12 10:15:54 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 10:16:02 - INFO - [MAIN] Entrando al programa.
+2026-03-12 10:16:02 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 10:16:02 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 10:16:02 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 10:16:10 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 10:16:10 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 10:16:10 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 10:16:10 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-12 10:16:10 - INFO - [MAIN_WINDOW] Creando nueva sesión para caja 1 con monto inicial de 100.0.
+2026-03-12 10:16:10 - INFO - [MAIN_WINDOW] Nueva sesión creada exitosamente. ID: 5
+2026-03-12 10:16:10 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 10:16:18 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 10:16:39 - INFO - [MAIN] Entrando al programa.
+2026-03-12 10:16:39 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 10:16:39 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 10:16:39 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 10:16:45 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 10:16:45 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 10:16:45 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 10:16:45 - INFO - [MAIN_WINDOW] Fondo fijo de caja 1 cargado: 1000.0
+2026-03-12 10:16:45 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 5
+2026-03-12 10:16:45 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 10:16:46 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-12 10:16:52 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 10:42:16 - INFO - [MAIN] Entrando al programa.
+2026-03-12 10:42:16 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 10:42:16 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 10:42:16 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 10:42:22 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 10:42:22 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 10:42:22 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 10:42:22 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 10:42:22 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 10:42:22 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 5
+2026-03-12 10:42:22 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 10:42:55 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 450.00 en categoría ID 4.
+2026-03-12 10:43:18 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 2,580.00 en categoría ID 3.
+2026-03-12 10:43:51 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Ingreso de 2,100.00 en categoría ID 8.
+2026-03-12 10:43:53 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-12 10:45:56 - ERROR - [CONNECTION] Error ejecutando query: UPDATE configuracion_caja SET saldo_inicial = %s WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 10:45:56 - INFO - [MODAL_CIERRE] Reporte de cierre generado en reports\cierre_sesion_5_2026-03-12_Caja General 1.pdf
+2026-03-12 10:46:01 - INFO - [MAIN_WINDOW] Caja cerrada exitosamente. Cerrando aplicación.
+2026-03-12 10:46:01 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 10:46:11 - INFO - [MAIN] Entrando al programa.
+2026-03-12 10:46:12 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 10:46:12 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 10:46:12 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 10:46:18 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 10:46:18 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 10:46:18 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 10:46:19 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 10:46:19 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 10:46:19 - INFO - [MAIN_WINDOW] Creando nueva sesión para caja 1 con monto inicial de 70.0.
+2026-03-12 10:46:19 - INFO - [MAIN_WINDOW] Nueva sesión creada exitosamente. ID: 6
+2026-03-12 10:46:19 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 10:47:17 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 11:01:18 - INFO - [MAIN] Entrando al programa.
+2026-03-12 11:01:18 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 11:01:18 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 11:01:18 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 11:01:29 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 11:01:29 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 11:01:29 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 11:01:29 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 11:01:29 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 11:01:29 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 11:01:29 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 11:01:33 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-12 11:10:47 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 11:19:48 - INFO - [MAIN] Entrando al programa.
+2026-03-12 11:19:48 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 11:19:48 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 11:19:48 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 11:19:53 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 11:19:53 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 11:19:53 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 11:19:53 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 11:19:53 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 11:19:53 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 11:19:53 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 11:20:13 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Ingreso de 930.00 en categoría ID 8.
+2026-03-12 11:28:14 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 11:28:20 - INFO - [MAIN] Entrando al programa.
+2026-03-12 11:28:21 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 11:28:21 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 11:28:21 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 11:28:29 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 11:28:29 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 11:28:29 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 11:28:29 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 11:28:29 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 11:28:29 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 11:28:29 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:12:26 - INFO - [MAIN] Entrando al programa.
+2026-03-12 12:12:26 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 12:12:26 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 12:12:26 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 12:12:36 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 12:12:36 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 12:12:36 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 12:12:36 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 12:12:36 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 12:12:36 - CRITICAL - [MAIN] Error crítico no controlado: 'decimal.Decimal' object has no attribute 'setFocus'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 62, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 266, in setup_ui
+    self.le_descripcion.returnPressed.connect(self.le_monto.setFocus)
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'decimal.Decimal' object has no attribute 'setFocus'
+2026-03-12 12:13:59 - INFO - [MAIN] Entrando al programa.
+2026-03-12 12:13:59 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 12:13:59 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 12:13:59 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 12:14:05 - WARNING - [LOGIN] Contraseña incorrecta para usuario 'admin'.
+2026-03-12 12:14:12 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 12:14:12 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 12:14:12 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 12:14:12 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 12:14:12 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 12:14:12 - CRITICAL - [MAIN] Error crítico no controlado: 'decimal.Decimal' object has no attribute 'setFocus'
+Traceback (most recent call last):
+  File "C:\Users\pitito\C5\main.py", line 65, in main
+    window = MainWindow(login.usuario_id, login.username, login.rol, login.caja_id, login.caja_nombre)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pitito\C5\views\main_window.py", line 62, in __init__
+    self.setup_ui()
+  File "C:\Users\pitito\C5\views\main_window.py", line 266, in setup_ui
+    self.le_descripcion.returnPressed.connect(self.le_monto.setFocus)
+                                              ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'decimal.Decimal' object has no attribute 'setFocus'
+2026-03-12 12:27:34 - INFO - [MAIN] Entrando al programa.
+2026-03-12 12:27:34 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 12:27:34 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 12:27:34 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 12:27:39 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 12:27:39 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 12:27:39 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 12:27:39 - ERROR - [CONNECTION] Error ejecutando query: SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s. Error: 1054 (42S22): Unknown column 'saldo_inicial' in 'field list'
+2026-03-12 12:27:39 - WARNING - [MAIN_WINDOW] No se encontró configuración para la caja 1. Usando fondo fijo 0.0.
+2026-03-12 12:27:39 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 12:27:39 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:29:40 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 12:30:07 - INFO - [MAIN] Entrando al programa.
+2026-03-12 12:30:08 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 12:30:08 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 12:30:08 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 12:30:13 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 12:30:13 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 12:30:13 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 12:30:13 - INFO - [MAIN_WINDOW] Saldo inicial de caja 1 cargado: 0.0
+2026-03-12 12:30:13 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 12:30:13 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:30:16 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-12 12:31:37 - INFO - [MAIN_WINDOW] Movimiento registrado por 'admin': Egreso de 400.00 en categoría ID 5.
+2026-03-12 12:31:43 - INFO - [MAIN_WINDOW] Abriendo modal de cierre de caja.
+2026-03-12 12:31:56 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 12:44:24 - INFO - [MAIN] Entrando al programa.
+2026-03-12 12:44:24 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 12:44:24 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 12:44:24 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 12:44:30 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 12:44:30 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 12:44:30 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 12:44:30 - INFO - [MAIN_WINDOW] Saldo inicial de caja 1 cargado: 0.0
+2026-03-12 12:44:30 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 12:44:30 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:44:40 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-12 12:44:40 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-12 12:44:46 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:44:56 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-12 12:44:56 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-12 12:45:58 - INFO - [CRUD_CAJAS] Actualizando caja ID 1: 'Caja General 1'.
+2026-03-12 12:46:02 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:49:23 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-12 12:49:23 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-12 12:49:27 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:49:29 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-12 12:49:29 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-12 12:49:32 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:49:35 - INFO - [MAIN_WINDOW] Abriendo configuración de empresa.
+2026-03-12 12:49:35 - INFO - [CRUD_EMPRESA] Entrando al programa (Configuración de Empresa).
+2026-03-12 12:49:39 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:49:42 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-12 12:49:42 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-12 12:49:46 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 12:49:51 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-12 12:49:51 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-12 12:49:53 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-12 13:00:03 - INFO - [MAIN] Entrando al programa.
+2026-03-12 13:00:04 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 13:00:04 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 13:00:04 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 13:00:09 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 13:00:09 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 13:00:09 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 13:00:09 - INFO - [MAIN_WINDOW] Saldo inicial de caja 1 cargado: 0.0
+2026-03-12 13:00:09 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 13:00:09 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 13:00:13 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-12 13:00:13 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-12 13:00:34 - INFO - [REPORT_VIEWER] Abriendo reporte: reports\cierre_sesion_2_2026-03-10_Caja General.pdf
+2026-03-12 13:00:45 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-12 13:00:48 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 13:01:08 - INFO - [MAIN] Entrando al programa.
+2026-03-12 13:01:08 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 13:01:08 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 13:01:08 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 13:01:14 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 13:01:14 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 13:01:14 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 13:01:14 - INFO - [MAIN_WINDOW] Saldo inicial de caja 1 cargado: 0.0
+2026-03-12 13:01:15 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 13:01:15 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 13:01:18 - INFO - [MAIN_WINDOW] Abriendo visor de reportes.
+2026-03-12 13:01:18 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
+2026-03-12 13:01:45 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
+2026-03-12 13:01:49 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.

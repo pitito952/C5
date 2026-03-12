@@ -11,13 +11,13 @@
 #
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QGridLayout,
-    QLabel, QTextEdit, QDoubleSpinBox, QPushButton, QMessageBox, QFrame
+    QLabel, QTextEdit, QLineEdit, QPushButton, QMessageBox, QFrame
 )
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QDoubleValidator
 import os
 import logging
-from decimal import Decimal
+#from decimal import Decimal
 from datetime import datetime
 from utils.export_pdf import generar_reporte_cierre
 
@@ -25,19 +25,21 @@ class ModalCierre(QDialog):
     def __init__(self, db_connection, sesion_id, simbolo_moneda, caja_nombre, usuario_nombre, parent=None):
         super().__init__(parent)
 
+        self.sp_fisico = None
         self.db = db_connection
         self.sesion_id = sesion_id
         self.simbolo_moneda = simbolo_moneda
         self.caja_nombre = caja_nombre
         self.usuario_nombre = usuario_nombre
+        self.caja_id = None
 
-        self.lbl_ingresos = self.sp_fisico = self.lbl_inicial = self.lbl_sistema = self.lbl_egresos = None
+        self.lbl_ingresos = self.lbl_inicial = self.lbl_sistema = self.lbl_egresos = None
         self.lbl_sistema = self.lbl_diferencia = self.te_obs = self.btn_cerrar = self.btn_cancelar = None
 
-        self.monto_inicial = 0.0
-        self.total_ingresos = 0.0
-        self.total_egresos = 0.0
-        self.monto_sistema = 0.0
+        self.monto_inicial = 0
+        self.total_ingresos = 0
+        self.total_egresos = 0
+        self.monto_sistema = 0
         
         self.setWindowTitle("Arqueo y Cierre de Caja")
         self.resize(450, 450)
@@ -120,13 +122,11 @@ class ModalCierre(QDialog):
         # Linea 5: Dinero Físico
         lbl_fisico_tag = QLabel("Dinero Físico Contado:")
         lbl_fisico_tag.setFont(QFont("Segoe UI", 12))
-        self.sp_fisico = QDoubleSpinBox()
+        self.sp_fisico = QLineEdit()
         self.sp_fisico.setFont(QFont("Segoe UI", 12))
-        self.sp_fisico.setRange(0.00, 999999.99)
-        self.sp_fisico.setDecimals(2)
-        self.sp_fisico.setPrefix(f"{self.simbolo_moneda} ")
+        self.sp_fisico.setValidator(QDoubleValidator(0.00, 999999.99, 2))
         self.sp_fisico.setAlignment(Qt.AlignmentFlag.AlignRight)
-        self.sp_fisico.valueChanged.connect(self.calculate_diferencia)
+        self.sp_fisico.textChanged.connect(self.calculate_diferencia)
         grid_layout.addWidget(lbl_fisico_tag, 5, 0)
         grid_layout.addWidget(self.sp_fisico, 5, 1)
         #form_layout.addRow("Dinero Físico Contado:", self.sp_fisico)
@@ -160,8 +160,12 @@ class ModalCierre(QDialog):
         self.btn_cerrar = QPushButton("✔ Confirmar Cierre")
         self.btn_cerrar.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
         self.btn_cerrar.setStyleSheet("background-color: #dc3545; color: white; padding: 8px;")
+        self.btn_cerrar.setAutoDefault(False)
+        self.btn_cerrar.setDefault(False)
         self.btn_cancelar = QPushButton("Cancelar")
         self.btn_cancelar.setFont(QFont("Segoe UI", 11))
+        self.btn_cancelar.setAutoDefault(False)
+        self.btn_cancelar.setDefault(False)
         
         self.btn_cerrar.clicked.connect(self.ejecutar_cierre)
         self.btn_cancelar.clicked.connect(self.reject)
@@ -173,18 +177,19 @@ class ModalCierre(QDialog):
         layout.addLayout(btn_layout)
 
     def load_session_data(self):
-        query_session = "SELECT monto_inicial FROM sesiones_caja WHERE id = %s"
+        query_session = "SELECT monto_inicial, caja_id FROM sesiones_caja WHERE id = %s"
         session_data = self.db.execute_query(query_session, (self.sesion_id,))
         if not session_data:
             return
             
-        self.monto_inicial = Decimal(session_data[0]['monto_inicial'])
+        self.monto_inicial = float(session_data[0]['monto_inicial'])
+        self.caja_id = session_data[0]['caja_id']
         
         query_movs = "SELECT tipo, monto FROM movimientos_caja WHERE sesion_id = %s AND anulado = FALSE"
         movs = self.db.execute_query(query_movs, (self.sesion_id,)) or []
         
-        self.total_ingresos = sum(Decimal(m['monto']) for m in movs if m['tipo'] == 'Ingreso')
-        self.total_egresos = sum(Decimal(m['monto']) for m in movs if m['tipo'] == 'Egreso')
+        self.total_ingresos = sum(float(m['monto']) for m in movs if m['tipo'] == 'Ingreso')
+        self.total_egresos = sum(float(m['monto']) for m in movs if m['tipo'] == 'Egreso')
         
         self.monto_sistema = self.monto_inicial + self.total_ingresos - self.total_egresos
         
@@ -193,11 +198,16 @@ class ModalCierre(QDialog):
         self.lbl_egresos.setText(self.format_money(self.total_egresos))
         self.lbl_sistema.setText(self.format_money(self.monto_sistema))
         
-        self.sp_fisico.setValue(self.monto_sistema)
+        self.sp_fisico.setText(f"{self.monto_sistema:.2f}")
         self.calculate_diferencia()
 
     def calculate_diferencia(self):
-        diff = self.sp_fisico.value() - self.monto_sistema
+        try:
+            fisico_val = float(self.sp_fisico.text() or 0)
+        except ValueError:
+            fisico_val = 0.0
+
+        diff = fisico_val - self.monto_sistema
         self.lbl_diferencia.setText(self.format_money(diff))
         
         if diff == 0:
@@ -208,18 +218,24 @@ class ModalCierre(QDialog):
             self.lbl_diferencia.setStyleSheet("color: red; font-weight: bold;") # Faltante
 
     def ejecutar_cierre(self):
-        fisico = self.sp_fisico.value()
+        try:
+            fisico = float(self.sp_fisico.text() or 0)
+        except ValueError:
+            fisico = 0.0
+
         diff = fisico - self.monto_sistema
         obs = self.te_obs.toPlainText().strip()
         
         if diff != 0 and not obs:
-            QMessageBox.warning(self, "Atención", "Como existe una diferencia, las observaciones son obligatorias.")
+            msg_box = QMessageBox(QMessageBox.Icon.Warning, "Atención", "Como existe una diferencia, las observaciones son obligatorias.", QMessageBox.StandardButton.Ok, self)
+            msg_box.button(QMessageBox.StandardButton.Ok).setText("Aceptar")
+            msg_box.exec()
             return
             
-        confirm = QMessageBox.question(
-            self, "Confirmar", "¿Está seguro que desea cerrar la caja?\nEsta acción no se puede deshacer.",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-        )
+        msg_box = QMessageBox(QMessageBox.Icon.Question, "Confirmar", "¿Está seguro que desea cerrar la caja?\nEsta acción no se puede deshacer.", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, self)
+        msg_box.button(QMessageBox.StandardButton.Yes).setText("Sí")
+        msg_box.button(QMessageBox.StandardButton.No).setText("No")
+        confirm = msg_box.exec()
         
         if confirm == QMessageBox.StandardButton.Yes:
             try:
@@ -232,14 +248,22 @@ class ModalCierre(QDialog):
                 """
                 params = (self.monto_sistema, fisico, diff, obs, self.sesion_id)
                 self.db.execute_query(query, params)
+
+                # Actualizar el saldo inicial de la caja para la próxima sesión
+                query_update_caja = "UPDATE configuracion_caja SET saldo_inicial = %s WHERE id = %s"
+                self.db.execute_query(query_update_caja, (fisico, self.caja_id))
                 
                 # Generar reporte
                 self.generar_y_abrir_reporte(fisico, diff, obs)
                 
-                QMessageBox.information(self, "Éxito", "Caja cerrada correctamente. Se ha generado el comprobante.")
+                msg_exito = QMessageBox(QMessageBox.Icon.Information, "Éxito", "Caja cerrada correctamente. Se ha generado el comprobante.", QMessageBox.StandardButton.Ok, self)
+                msg_exito.button(QMessageBox.StandardButton.Ok).setText("Aceptar")
+                msg_exito.exec()
                 self.accept()
             except Exception as e:
-                QMessageBox.critical(self, "Error", str(e))
+                msg_error = QMessageBox(QMessageBox.Icon.Critical, "Error", str(e), QMessageBox.StandardButton.Ok, self)
+                msg_error.button(QMessageBox.StandardButton.Ok).setText("Aceptar")
+                msg_error.exec()
 
     def generar_y_abrir_reporte(self, fisico, diff, obs):
         try:
@@ -272,4 +296,6 @@ class ModalCierre(QDialog):
             os.startfile(filepath)
         except Exception as e:
             logging.error(f"[MODAL_CIERRE] Error al generar o abrir el reporte de cierre: {e}")
-            QMessageBox.warning(self, "Error de Reporte", "La caja se cerró, pero no se pudo generar el comprobante en PDF.")
+            msg_box = QMessageBox(QMessageBox.Icon.Warning, "Error de Reporte", "La caja se cerró, pero no se pudo generar el comprobante en PDF.", QMessageBox.StandardButton.Ok, self)
+            msg_box.button(QMessageBox.StandardButton.Ok).setText("Aceptar")
+            msg_box.exec()

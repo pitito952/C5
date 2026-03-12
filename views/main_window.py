@@ -34,10 +34,11 @@ class MainWindow(QMainWindow):
     def __init__(self, usuario_id, username, rol, caja_id, caja_nombre):
         super().__init__()
 
-        self.le_monto = Decimal(0)
+        # Inicialización de variables de instancia
         self.card_saldo = self.btn_guardar_mov = self.table_movimientos = self.btn_cierre = self.lbl_saldo_val = None
         self.lbl_ingresos_val = self.lbl_egresos_val = self.report_start_date = self.report_end_date = None
         self.card_ingresos = self.card_egresos = self.cb_tipo_mov = self.cb_categoria = self.le_descripcion = None
+        self.le_monto = None # Inicializar como None, no como Decimal
         self.lbl_inicial_sesion_val = None
 
         logging.info("[MAIN_WINDOW] Entrando al programa (Ventana Principal).")
@@ -49,7 +50,8 @@ class MainWindow(QMainWindow):
         self.caja_nombre = caja_nombre
         self.sesion_id = None 
         self.simbolo_moneda = "$" # Valor por defecto
-        self.fondo_fijo = 0.0
+        self.fondo_fijo = 0.0 # Este ahora representará el saldo inicial de la caja (cierre anterior o fondo fijo)
+        self.saldo_actual_caja = 0.0 # Variable para mantener el saldo actual
         
         self.db = DatabaseConnection()
         
@@ -57,7 +59,7 @@ class MainWindow(QMainWindow):
         self.center_and_resize(0.8)
         
         self.cargar_parametros_empresa()
-        self.cargar_fondo_fijo()
+        self.cargar_saldo_inicial_caja() # Renombrado para mayor claridad
         self.setup_ui()
         self.inicializar_sesion()
         self.load_initial_data()
@@ -81,16 +83,31 @@ class MainWindow(QMainWindow):
         except Exception as e:
             logging.error(f"[MAIN_WINDOW] Error cargando parámetros de empresa: {e}")
 
-    def cargar_fondo_fijo(self):
-        """Carga el fondo fijo de la caja actual."""
+    def cargar_saldo_inicial_caja(self):
+        """
+        Carga el saldo inicial de la caja.
+        Prioriza el saldo_inicial (del cierre anterior) de la tabla configuracion_caja,
+        si no existe, usa el fondo_fijo de la misma tabla.
+        """
         try:
-            query = "SELECT fondo_fijo FROM configuracion_caja WHERE id = %s"
+            query = "SELECT saldo_inicial, fondo_fijo FROM configuracion_caja WHERE id = %s"
             res = self.db.execute_query(query, (self.caja_id,))
             if res:
-                self.fondo_fijo = float(res[0].get('fondo_fijo', 0.0))
-                logging.info(f"[MAIN_WINDOW] Fondo fijo de caja {self.caja_id} cargado: {self.fondo_fijo}")
+                saldo_inicial_db = res[0].get('saldo_inicial')
+                fondo_fijo_db = float(res[0].get('fondo_fijo', 0.0))
+                
+                if saldo_inicial_db is not None:
+                    self.fondo_fijo = float(saldo_inicial_db)
+                else:
+                    self.fondo_fijo = fondo_fijo_db
+                
+                logging.info(f"[MAIN_WINDOW] Saldo inicial de caja {self.caja_id} cargado: {self.fondo_fijo}")
+            else:
+                logging.warning(f"[MAIN_WINDOW] No se encontró configuración para la caja {self.caja_id}. Usando fondo fijo 0.0.")
+                self.fondo_fijo = 0.0 # Fallback si no se encuentra la caja
         except Exception as e:
-            logging.error(f"[MAIN_WINDOW] Error cargando fondo fijo de caja {self.caja_id}: {e}")
+            logging.error(f"[MAIN_WINDOW] Error cargando saldo inicial de caja {self.caja_id}: {e}")
+            self.fondo_fijo = 0.0 # Asegurar un valor por defecto en caso de error
 
     def format_money(self, amount):
         """Formatea un monto con el símbolo de moneda configurado."""
@@ -247,6 +264,7 @@ class MainWindow(QMainWindow):
         vbox_desc.addWidget(QLabel("Concepto / Descripción:"))
         self.le_descripcion = QLineEdit()
         self.le_descripcion.setPlaceholderText("Detalle del movimiento...")
+        # self.le_descripcion.returnPressed.connect(self.le_monto.setFocus) # MOVIDO AL FINAL
         vbox_desc.addWidget(self.le_descripcion)
         form_layout.addLayout(vbox_desc, stretch=2)
         
@@ -261,9 +279,14 @@ class MainWindow(QMainWindow):
         regex = QRegularExpression(r"^\d{0,7}(\.\d{0,2})?$")
         validator = QRegularExpressionValidator(regex, self.le_monto)
         self.le_monto.setValidator(validator)
+        # self.le_monto.returnPressed.connect(self.guardar_movimiento) # MOVIDO AL FINAL
         vbox_monto.addWidget(self.le_monto)
         form_layout.addLayout(vbox_monto)
         
+        # Conexiones de Enter (MOVIDAS AQUÍ)
+        self.le_descripcion.returnPressed.connect(self.le_monto.setFocus)
+        self.le_monto.returnPressed.connect(self.guardar_movimiento)
+
         # Botón Guardar
         vbox_btn = QVBoxLayout()
         vbox_btn.addWidget(QLabel("")) 
@@ -287,6 +310,8 @@ class MainWindow(QMainWindow):
             }
         """)
         self.btn_guardar_mov.clicked.connect(self.guardar_movimiento)
+        self.btn_guardar_mov.setDefault(True)
+        self.btn_guardar_mov.setAutoDefault(True)
         vbox_btn.addWidget(self.btn_guardar_mov)
         form_layout.addLayout(vbox_btn)
 
@@ -395,14 +420,6 @@ class MainWindow(QMainWindow):
                 self.sesion_id = result[0]['id']
                 logging.info(f"[MAIN_WINDOW] Sesión existente encontrada. ID: {self.sesion_id}")
             else:
-                #logging.info(f"[MAIN_WINDOW] No hay sesión abierta para la caja {self.caja_id}. Creando nueva sesión automática.")
-                #query_insert = """
-                #    INSERT INTO sesiones_caja (caja_id, usuario_id, fecha_apertura, monto_inicial, estado)
-                #    VALUES (%s, %s, NOW(), %s, 'Abierta')
-                #"""
-                #self.sesion_id = self.db.execute_query(query_insert, (self.caja_id, self.usuario_id, self.fondo_fijo))
-                #logging.info(f"[MAIN_WINDOW] Nueva sesión creada exitosamente. ID: {self.sesion_id}")
-
                 # No hay sesión abierta, buscar el saldo final de la última sesión cerrada
                 query_last_session = """SELECT monto_final_fisico 
                                             FROM sesiones_caja 
@@ -414,7 +431,7 @@ class MainWindow(QMainWindow):
                 if last_session:
                     monto_inicial = float(last_session[0]['monto_final_fisico'])
                 else:
-                    # Si nunca ha habido una sesión, usar el fondo fijo de la caja
+                    # Si nunca ha habido una sesión, usar el saldo inicial de la caja (fondo fijo o saldo anterior)
                     monto_inicial = self.fondo_fijo
 
                 logging.info(f"[MAIN_WINDOW] Creando nueva sesión para caja {self.caja_id} con monto inicial de {monto_inicial}.")
@@ -423,7 +440,7 @@ class MainWindow(QMainWindow):
                                 INSERT INTO sesiones_caja (caja_id, usuario_id, fecha_apertura, monto_inicial, estado)
                                 VALUES (%s, %s, NOW(), %s, 'Abierta')
                                """
-                self.sesion_id = self.db.execute_query(query_insert, (self.caja_id, self.usuario_id, self.fondo_fijo))
+                self.sesion_id = self.db.execute_query(query_insert, (self.caja_id, self.usuario_id, monto_inicial)) # CORRECCIÓN AQUÍ
                 logging.info(f"[MAIN_WINDOW] Nueva sesión creada exitosamente. ID: {self.sesion_id}")
 
         except Exception as e:
@@ -496,7 +513,7 @@ class MainWindow(QMainWindow):
         query_ingresos = """
             SELECT COALESCE(SUM(monto), 0) as total
             FROM movimientos_caja 
-            WHERE tipo = 'Ingreso' AND sesion_id = %s
+            WHERE tipo = 'Ingreso' AND sesion_id = %s AND anulado = FALSE
         """
         res_ing = self.db.execute_query(query_ingresos, (self.sesion_id,))
         total_ingresos = float(res_ing[0]['total']) if res_ing else 0.0
@@ -504,19 +521,19 @@ class MainWindow(QMainWindow):
         query_egresos = """
             SELECT COALESCE(SUM(monto), 0) as total
             FROM movimientos_caja 
-            WHERE tipo = 'Egreso' AND sesion_id = %s
+            WHERE tipo = 'Egreso' AND sesion_id = %s AND anulado = FALSE
         """
         res_egr = self.db.execute_query(query_egresos, (self.sesion_id,))
         total_egresos = float(res_egr[0]['total']) if res_egr else 0.0
         
         # Saldo actual de la sesión = Monto Inicial de la Sesión + Ingresos - Egresos
-        saldo = monto_inicial_sesion + total_ingresos - total_egresos
+        self.saldo_actual_caja = monto_inicial_sesion + total_ingresos - total_egresos
         
         # Actualizar Dashboard
-        self.lbl_inicial_sesion_val.setText(self.format_money(monto_inicial_sesion)) # Nuevo
+        self.lbl_inicial_sesion_val.setText(self.format_money(monto_inicial_sesion))
         self.lbl_ingresos_val.setText(self.format_money(total_ingresos))
         self.lbl_egresos_val.setText(self.format_money(total_egresos))
-        self.lbl_saldo_val.setText(self.format_money(saldo))
+        self.lbl_saldo_val.setText(self.format_money(self.saldo_actual_caja))
 
     def guardar_movimiento(self):
         if not self.sesion_id:
@@ -540,8 +557,18 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Monto Inválido", "Por favor, ingrese un monto válido.")
             return
 
+        # --- Validación de Saldo ---
+        if tipo == 'Egreso':
+            if monto > self.saldo_actual_caja:
+                msg_box = QMessageBox(QMessageBox.Icon.Warning, "Saldo Insuficiente", 
+                                      f"No puede registrar un egreso de {self.format_money(monto)} porque el saldo actual es de solo {self.format_money(self.saldo_actual_caja)}.",
+                                      QMessageBox.StandardButton.Ok, self)
+                msg_box.button(QMessageBox.StandardButton.Ok).setText("Aceptar")
+                msg_box.exec()
+                return
+        # --- Fin de Validación ---
+
         try:
-            # CORRECCIÓN: Añadir usuario_id a la consulta
             query = """
                 INSERT INTO movimientos_caja (sesion_id, usuario_id, caja_id, categoria_id, tipo, concepto, monto, fecha_hora)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())
@@ -550,7 +577,6 @@ class MainWindow(QMainWindow):
             
             result = self.db.execute_query(query, params)
             
-            # CORRECCIÓN: Mover el logging para que solo se ejecute si no hay error
             if result is not None:
                 logging.info(f"[MAIN_WINDOW] Movimiento registrado por '{self.username}': {tipo} de {self.format_money(monto)} en categoría ID {categoria_id}.")
                 self.limpiar_form_movimiento()
