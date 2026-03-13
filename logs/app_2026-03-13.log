@@ -1,0 +1,23 @@
+2026-03-13 12:44:37 - INFO - [MAIN] Entrando al programa.
+2026-03-13 12:44:38 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-13 12:44:38 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-13 12:44:38 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-13 12:44:42 - ERROR - [LOGIN] Error verificando hash para usuario 'admin': Invalid salt
+2026-03-13 12:44:53 - ERROR - [LOGIN] Error verificando hash para usuario 'admin': Invalid salt
+2026-03-13 12:44:56 - INFO - [MAIN] Login cancelado o cerrado por el usuario. Saliendo.
+2026-03-13 12:56:21 - INFO - [MAIN] Entrando al programa.
+2026-03-13 12:56:21 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-13 12:56:21 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-13 12:56:21 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-13 12:56:30 - ERROR - [LOGIN] Error verificando hash para usuario 'admin': Invalid salt
+2026-03-13 12:56:37 - INFO - [MAIN] Login cancelado o cerrado por el usuario. Saliendo.
+2026-03-13 13:21:31 - INFO - [MAIN] Entrando al programa.
+2026-03-13 13:21:31 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-13 13:21:31 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-13 13:21:31 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-13 13:21:37 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja Chica'.
+2026-03-13 13:21:37 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-13 13:21:37 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-13 13:22:15 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-13 13:22:21 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-13 13:22:26 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).

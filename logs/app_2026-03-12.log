@@ -234,3 +234,47 @@ AttributeError: 'decimal.Decimal' object has no attribute 'setFocus'
 2026-03-12 13:01:18 - INFO - [REPORT_VIEWER] Entrando al programa (Visor de Reportes).
 2026-03-12 13:01:45 - INFO - [MAIN_WINDOW] Cerrado visor de reportes.
 2026-03-12 13:01:49 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.
+2026-03-12 15:59:47 - INFO - [MAIN] Entrando al programa.
+2026-03-12 15:59:47 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 15:59:47 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 15:59:47 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 15:59:56 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 15:59:56 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 15:59:56 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 15:59:56 - INFO - [MAIN_WINDOW] Saldo inicial de caja 1 cargado: 0.0
+2026-03-12 15:59:56 - INFO - [MAIN_WINDOW] Sesión existente encontrada. ID: 6
+2026-03-12 15:59:56 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 16:00:14 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-12 16:00:14 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-12 16:02:59 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 16:03:03 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-12 16:03:03 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-12 16:08:15 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 16:08:22 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de usuarios.
+2026-03-12 16:08:22 - INFO - [CRUD_USUARIOS] Entrando al programa (Gestión de Usuarios).
+2026-03-12 16:08:25 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 16:08:29 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-12 16:08:29 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-12 16:15:38 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 16:15:49 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-01 hasta 2026-03-12 para la caja ID 1.
+2026-03-12 16:15:49 - INFO - [MAIN_WINDOW] Reporte PDF generado exitosamente en reports\reporte-general_2026-03-01_a_2026-03-12_Caja General 1.pdf.
+2026-03-12 16:49:42 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-12 16:49:42 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-12 16:57:31 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 17:01:11 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de cajas.
+2026-03-12 17:01:11 - INFO - [CRUD_CAJAS] Entrando al programa (Gestión de Cajas).
+2026-03-12 17:04:48 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 17:04:50 - INFO - [MAIN_WINDOW] Abriendo ventana de gestión de categorías.
+2026-03-12 17:04:50 - INFO - [CRUD_CATEGORIAS] Entrando al programa (Gestión de Categorías).
+2026-03-12 17:10:19 - INFO - [MAIN_WINDOW] Cargando datos iniciales (movimientos, saldo, categorías).
+2026-03-12 17:10:24 - INFO - [MAIN_WINDOW] Solicitado reporte PDF desde 2026-03-05 hasta 2026-03-12 para la caja ID 1.
+2026-03-12 17:10:24 - INFO - [MAIN_WINDOW] Reporte PDF generado exitosamente en reports\reporte-general_2026-03-05_a_2026-03-12_Caja General 1.pdf.
+2026-03-12 17:28:30 - INFO - [MAIN] Entrando al programa.
+2026-03-12 17:28:30 - INFO - [CONNECTION] Conexión exitosa a la base de datos.
+2026-03-12 17:28:30 - INFO - [MAIN] Iniciando ventana de Login.
+2026-03-12 17:28:30 - INFO - [LOGIN] Entrando al programa (Ventana de Login).
+2026-03-12 17:28:36 - INFO - [LOGIN] Usuario 'admin' autenticado correctamente en caja 'Caja General 1'.
+2026-03-12 17:28:36 - INFO - [MAIN] Login exitoso. Usuario: admin. Iniciando ventana principal.
+2026-03-12 17:28:36 - INFO - [MAIN_WINDOW] Entrando al programa (Ventana Principal).
+2026-03-12 17:28:36 - INFO - [MAIN_WINDOW] Saldo inicial de caja 1 cargado: 0.0
+2026-03-12 18:02:38 - INFO - [MAIN_WINDOW] Solicitud de cierre de la aplicación.

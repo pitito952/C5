@@ -6,6 +6,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 import bcrypt
 import logging
+import sys
+from database.connection import DatabaseConnection
 
 class CrudUsuarios(QDialog):
     def __init__(self, db_connection, parent=None):
@@ -207,3 +209,17 @@ class CrudUsuarios(QDialog):
         except Exception as e:
             QMessageBox.critical(self, "Error de Base de Datos", str(e))
             logging.error(f"[CRUD_USUARIOS] Error eliminando usuario ID {uid}: {e}")
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    app = QApplication(sys.argv)
+    
+    # Crear una conexión a la base de datos para el script standalone
+    db_conn = DatabaseConnection()
+    if not db_conn.get_connection():
+        QMessageBox.critical(None, "Error de Conexión", "No se pudo conectar a la base de datos. Verifique la configuración y que el servidor esté en línea.")
+        sys.exit(1)
+
+    main_window = CrudUsuarios(db_connection=db_conn)
+    main_window.show()
+    sys.exit(app.exec())

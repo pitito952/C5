@@ -2,8 +2,8 @@ from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QTableWidget, QTableWidgetItem,
     QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget, QApplication
 )
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
+from PySide6.QtCore import Qt, QRegularExpression
+from PySide6.QtGui import QFont, QRegularExpressionValidator
 import logging
 
 class CrudCajas(QDialog):
@@ -35,13 +35,17 @@ class CrudCajas(QDialog):
         form_layout = QFormLayout(form_widget)
         
         self.le_nombre = QLineEdit()
-        self.le_descripcion = QLineEdit()
+        self.le_fondo_fijo = QLineEdit()
+        regex = QRegularExpression(r"^\d{0,7}(\.\d{0,2})?$")
+        validator = QRegularExpressionValidator(regex, self.le_fondo_fijo)
+        self.le_fondo_fijo.setValidator(validator)
+        self.le_fondo_fijo.setPlaceholderText("0.00")
         
         self.cb_estado = QComboBox()
         self.cb_estado.addItems(["Activa", "Inactiva"])
 
         form_layout.addRow("Nombre Caja:", self.le_nombre)
-        form_layout.addRow("Descripción:", self.le_descripcion)
+        form_layout.addRow("Fondo Fijo:", self.le_fondo_fijo)
         form_layout.addRow("Estado:", self.cb_estado)
         layout.addWidget(form_widget)
 
@@ -64,8 +68,8 @@ class CrudCajas(QDialog):
 
         # Tabla
         self.table = QTableWidget()
-        self.table.setColumnCount(3) # ID Column removed
-        self.table.setHorizontalHeaderLabels(["Nombre", "Descripción", "Estado"])
+        self.table.setColumnCount(3)
+        self.table.setHorizontalHeaderLabels(["Nombre", "Fondo Fijo", "Estado"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -74,7 +78,7 @@ class CrudCajas(QDialog):
 
     def load_data(self):
         try:
-            query = "SELECT id, nombre, descripcion, estado FROM configuracion_caja ORDER BY id"
+            query = "SELECT id, nombre, fondo_fijo, estado FROM configuracion_caja ORDER BY id"
             registros = self.db.execute_query(query) or []
             
             self.table.setRowCount(len(registros))
@@ -83,7 +87,10 @@ class CrudCajas(QDialog):
                 item_nombre.setData(Qt.UserRole, row_data['id'])
                 self.table.setItem(row_idx, 0, item_nombre)
 
-                self.table.setItem(row_idx, 1, QTableWidgetItem(str(row_data['descripcion'])))
+                item_fondo = QTableWidgetItem(f"{float(row_data['fondo_fijo']):,.2f}")
+                item_fondo.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                self.table.setItem(row_idx, 1, item_fondo)
+                
                 self.table.setItem(row_idx, 2, QTableWidgetItem(row_data['estado']))
         except Exception as e:
             logging.error(f"[CRUD_CAJAS] Error cargando datos: {e}")
@@ -96,20 +103,22 @@ class CrudCajas(QDialog):
         self.current_caja_id = self.table.item(row, 0).data(Qt.UserRole)
         
         self.le_nombre.setText(self.table.item(row, 0).text())
-        self.le_descripcion.setText(self.table.item(row, 1).text())
+        # Quitar formato de moneda para editar
+        fondo_fijo_text = self.table.item(row, 1).text().replace(",", "")
+        self.le_fondo_fijo.setText(fondo_fijo_text)
         self.cb_estado.setCurrentText(self.table.item(row, 2).text())
 
     def limpiar_form(self):
         self.current_caja_id = None
         self.le_nombre.clear()
-        self.le_descripcion.clear()
+        self.le_fondo_fijo.clear()
         self.cb_estado.setCurrentIndex(0)
         self.table.clearSelection()
 
     def guardar_caja(self):
         cid = self.current_caja_id
         nombre = self.le_nombre.text().strip()
-        desc = self.le_descripcion.text().strip()
+        fondo_fijo_str = self.le_fondo_fijo.text().strip() or "0"
         estado = self.cb_estado.currentText()
         
         if not nombre:
@@ -117,16 +126,22 @@ class CrudCajas(QDialog):
             return
 
         try:
+            fondo_fijo = float(fondo_fijo_str)
+        except ValueError:
+            QMessageBox.warning(self, "Error", "El valor del fondo fijo no es válido.")
+            return
+
+        try:
             if cid:
                 # Update
-                query = "UPDATE configuracion_caja SET nombre=%s, descripcion=%s, estado=%s WHERE id=%s"
-                self.db.execute_query(query, (nombre, desc, estado, cid))
+                query = "UPDATE configuracion_caja SET nombre=%s, fondo_fijo=%s, estado=%s WHERE id=%s"
+                self.db.execute_query(query, (nombre, fondo_fijo, estado, cid))
                 logging.info(f"[CRUD_CAJAS] Actualizando caja ID {cid}: '{nombre}'.")
                 QMessageBox.information(self, "Éxito", "Caja actualizada.")
             else:
                 # Insert
-                query = "INSERT INTO configuracion_caja (nombre, descripcion, estado) VALUES (%s, %s, %s)"
-                self.db.execute_query(query, (nombre, desc, estado))
+                query = "INSERT INTO configuracion_caja (nombre, fondo_fijo, estado) VALUES (%s, %s, %s)"
+                self.db.execute_query(query, (nombre, fondo_fijo, estado))
                 logging.info(f"[CRUD_CAJAS] Creando nueva caja: '{nombre}'.")
                 QMessageBox.information(self, "Éxito", "Nueva caja creada.")
                 

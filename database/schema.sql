@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
     password_hash VARCHAR(255) NOT NULL,
     rol ENUM('Cajero', 'Administrador') NOT NULL DEFAULT 'Cajero',
     activo BOOLEAN NOT NULL DEFAULT TRUE,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultimo_acceso DATETIME NULL DEFAULT NULL
 ) ENGINE=InnoDB;
 
 -- Usuario administrador por defecto (password = admin123 hash simulado)
@@ -39,7 +40,7 @@ CREATE TABLE IF NOT EXISTS configuracion_caja (
 
 -- Crear una caja de ejemplo
 INSERT IGNORE INTO configuracion_caja (nombre, fondo_fijo) 
-VALUES ('Caja General', 1000.00);
+VALUES ('Caja Chica', 10000.00);
 
 -- --------------------------------------------------------
 -- 3. Tabla: categorias_movimiento
@@ -92,8 +93,8 @@ CREATE TABLE IF NOT EXISTS movimientos_caja (
     fecha_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tipo ENUM('Ingreso', 'Egreso') NOT NULL,
     concepto VARCHAR(255) NOT NULL,
-    comprobante_tipo VARCHAR(50) NULL, -- 'Factura', 'Vale', 'Recibo'
-    comprobante_numero VARCHAR(100) NULL,
+    comprobante_tipo VARCHAR(1) NULL, -- 'F', 'V', 'R', etc.
+    comprobante_numero VARCHAR(8) NULL,
     monto DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     anulado BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (sesion_id) REFERENCES sesiones_caja(id) ON DELETE RESTRICT,
@@ -101,6 +102,9 @@ CREATE TABLE IF NOT EXISTS movimientos_caja (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE RESTRICT,
     FOREIGN KEY (categoria_id) REFERENCES categorias_movimiento(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
+
+-- Índices útiles para rendimiento
+CREATE INDEX idx_movimientos_sesion ON movimientos_caja(sesion_id);
 
 -- --------------------------------------------------------
 -- 6. Tabla: parametros_control
@@ -116,9 +120,8 @@ CREATE TABLE IF NOT EXISTS parametros_control (
 ) ENGINE=InnoDB;
 
 -- Valores por defecto
-INSERT IGNORE INTO parametros_control (id, codigo_empresa, nombre_empresa, ruta_logo) 
-VALUES (1, 'EMP', 'Mi Empresa', NULL);
+INSERT IGNORE INTO parametros_control (id, codigo_empresa, nombre_empresa, ruta_logo, simbolo_moneda, nombre_moneda, tasa_cambio)
+VALUES (1, 'A01', 'Mi Empresa', 'C:/Users/pitito/aida/assets/logotipo/logo_coninfo.png', '', '', '1.0000');
 
 -- Índices útiles para rendimiento
 CREATE INDEX idx_sesion_activa ON sesiones_caja(estado);
-CREATE INDEX idx_movimientos_sesion ON movimientos_caja(sesion_id);

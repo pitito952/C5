@@ -19,6 +19,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 import bcrypt
 import logging
+from datetime import datetime
 
 class LoginWindow(QDialog):
     def __init__(self, db_connection, parent=None):
@@ -159,6 +160,13 @@ class LoginWindow(QDialog):
                     self.caja_id = caja_id
                     self.caja_nombre = self.cb_caja.currentText()
                     
+                    # Actualizar último acceso
+                    try:
+                        query_update = "UPDATE usuarios SET ultimo_acceso = %s WHERE id = %s"
+                        self.db.execute_query(query_update, (datetime.now(), self.usuario_id))
+                    except Exception as e:
+                        logging.error(f"[LOGIN] No se pudo actualizar 'ultimo_acceso' para el usuario {self.usuario_id}: {e}")
+
                     logging.info(f"[LOGIN] Usuario '{usr}' autenticado correctamente en caja '{self.caja_nombre}'.")
                     self.accept()
                     return
