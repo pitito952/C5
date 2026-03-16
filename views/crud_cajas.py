@@ -1,14 +1,27 @@
+# *****************************************************************************
+#
+#   Sistema:    C5          -   Módulo de Caja Chica
+#   Módulo:     crud_cajas  -   Mantenimiento de Cajas
+#   Autor:      Antigravity/Addy López/Gemini
+#
+# *****************************************************************************
+#
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QTableWidget, QTableWidgetItem,
-    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget, QApplication
+    QLabel, QLineEdit, QPushButton, QMessageBox, QHeaderView, QComboBox, QWidget, QAbstractItemView
 )
 from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtGui import QFont, QRegularExpressionValidator
 import logging
 
+
 class CrudCajas(QDialog):
     def __init__(self, db_connection, parent=None):
         super().__init__(parent)
+
+        self.le_fondo_fijo = None
+        self.le_nombre = self.cb_estado = self.btn_guardar = self.btn_limpiar = self.btn_eliminar = self.table = None
+
         logging.info("[CRUD_CAJAS] Entrando al programa (Gestión de Cajas).")
         self.db = db_connection
         self.current_caja_id = None
@@ -27,8 +40,8 @@ class CrudCajas(QDialog):
         layout = QVBoxLayout(self)
 
         title = QLabel("Administración de Cajas (Puntos de Venta)")
-        title.setFont(QFont("Arial", 14, QFont.Bold))
-        layout.addWidget(title, alignment=Qt.AlignCenter)
+        title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Formulario
         form_widget = QWidget()
@@ -70,7 +83,7 @@ class CrudCajas(QDialog):
         self.table = QTableWidget()
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels(["Nombre", "Fondo Fijo", "Estado"])
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self.seleccionar_registro)
@@ -84,11 +97,11 @@ class CrudCajas(QDialog):
             self.table.setRowCount(len(registros))
             for row_idx, row_data in enumerate(registros):
                 item_nombre = QTableWidgetItem(row_data['nombre'])
-                item_nombre.setData(Qt.UserRole, row_data['id'])
+                item_nombre.setData(Qt.ItemDataRole.UserRole, row_data['id'])
                 self.table.setItem(row_idx, 0, item_nombre)
 
                 item_fondo = QTableWidgetItem(f"{float(row_data['fondo_fijo']):,.2f}")
-                item_fondo.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                item_fondo.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 self.table.setItem(row_idx, 1, item_fondo)
                 
                 self.table.setItem(row_idx, 2, QTableWidgetItem(row_data['estado']))
@@ -100,7 +113,7 @@ class CrudCajas(QDialog):
         if not selected: return
         
         row = selected[0].row()
-        self.current_caja_id = self.table.item(row, 0).data(Qt.UserRole)
+        self.current_caja_id = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
         
         self.le_nombre.setText(self.table.item(row, 0).text())
         # Quitar formato de moneda para editar
@@ -169,9 +182,9 @@ class CrudCajas(QDialog):
 
             confirm = QMessageBox.question(self, "Confirmar Eliminación",
                                            f"¿Está seguro de que desea eliminar la caja ID {cid}?",
-                                           QMessageBox.Yes | QMessageBox.No)
+                                           QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
 
-            if confirm == QMessageBox.Yes:
+            if confirm == QMessageBox.StandardButton.Yes:
                 query_delete = "DELETE FROM configuracion_caja WHERE id = %s"
                 self.db.execute_query(query_delete, (cid,))
                 logging.info(f"[CRUD_CAJAS] Caja ID {cid} eliminada exitosamente.")

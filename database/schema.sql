@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Usuario administrador por defecto (password = admin123 hash simulado)
 INSERT IGNORE INTO usuarios (username, password_hash, rol) 
-VALUES ('admin', 'admin123', 'Administrador');
+-- VALUES ('admin', 'admin123', 'Administrador');
+VALUES ('admin', '$2b$12$4lLmi.kuF/X39a6qTendbug4HudgrjYGiORXouLCzsSfgdfGkZcJ6', 'Administrador');
 
 -- --------------------------------------------------------
 -- 2. Tabla: configuracion_caja

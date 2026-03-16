@@ -1,0 +1,66 @@
+Plan de Implementación del Licenciamiento
+
+Fase 1: Preparación de la Base de Datos y Herramientas
+
+    •    Paso 1.1: Modificar database/schema.sql:
+        ◦   Añadir una nueva tabla licencia que almacenará la dirección MAC del equipo (como identificador) y la
+            clave de licencia generada.
+        ◦   Esta tabla tendrá columnas como id (PRIMARY KEY), mac_address (UNIQUE), license_key, activation_date.
+
+    •    Paso 1.2: Crear un Módulo para Información de Hardware (utils/hardware_info.py):
+        ◦   Este módulo contendrá una función para obtener la dirección MAC del equipo de forma fiable. Utilizaremos
+            la librería getmac.
+        ◦   También podría incluir funciones para obtener otros identificadores si se decide usar una huella más
+            compleja en el futuro.
+
+    •   Paso 1.3: Crear un Generador de Licencias (Script para el Desarrollador):
+        ◦   Este será un script Python separado y solo para tu uso. No se incluirá en la aplicación del cliente.
+        ◦   Tomará como entrada una dirección MAC (que te enviará el cliente) y tu "semilla secreta" (hardcodeada
+            en este script y en la aplicación), y generará la clave de licencia.
+
+Fase 2: Integración en la Aplicación del Cliente
+
+    •   Paso 2.1: Definir la "Semilla Secreta" en la Aplicación:
+        ◦   Crearé un módulo config.py (o similar) donde se almacenará la "semilla secreta" como una constante.
+            Esta semilla debe ser la misma que uses en tu generador de licencias. Este archivo será parte del
+            empaquetado de cx-freeze.
+
+    •   Paso 2.2: Crear un Diálogo de Licencia (views/license_dialog.py):
+        ◦   Este será un QDialog que se mostrará al usuario si la aplicación detecta que no hay una licencia válida.
+        ◦   Mostrará la dirección MAC del equipo (obtenida del módulo hardware_info.py).
+        ◦   Tendrá un campo QLineEdit para que el usuario introduzca la clave de licencia que tú le proporcionaste.
+        ◦   Tendrá un botón "Activar" y un botón "Salir".
+
+    •   Paso 2.3: Integrar la Lógica de Licenciamiento en main.py:
+        ◦   Antes de iniciar la ventana de login, main.py verificará si existe una licencia válida en la base de
+            datos para la dirección MAC actual del equipo.
+        ◦   Si no hay licencia o es inválida, mostrará el LicenseDialog.
+        ◦   Si el usuario introduce una clave válida en el diálogo, esta se guardará en la tabla licencia y la
+            aplicación continuará. Si no, la aplicación se cerrará.
+
+Fase 3: Flujo de Uso para el Cliente
+
+    1.  Instalación del Software Base: El cliente instala MySQL y Python.
+    2.  Instalación de la Aplicación: El cliente instala tu aplicación empaquetada con cx-freeze.
+    3.  Primera Ejecución de la Aplicación:
+        ◦   La aplicación se inicia (main.py).
+        ◦   Verifica la base de datos (ya implementado).
+        ◦   Detecta que no hay licencia válida.
+        ◦   Se abre el LicenseDialog.
+        ◦   El LicenseDialog muestra la dirección MAC del equipo al cliente.
+        ◦   El cliente copia esa dirección MAC y te la envía.
+    4.  Generación de Licencia por el Desarrollador (Tú):
+        ◦   Recibes la dirección MAC del cliente.
+        ◦   Utilizas tu script license_generator.py (Paso 1.3) con la MAC del cliente y tu "semilla secreta" para
+            generar una clave de licencia única.
+        ◦   Le envías esta clave de licencia al cliente.
+    5.  Activación de la Licencia por el Cliente:
+        ◦   El cliente introduce la clave de licencia recibida en el LicenseDialog.
+        ◦   La aplicación, internamente, genera un hash con la MAC actual del equipo y la "semilla secreta"
+            (del config.py de la aplicación) y lo compara con la clave introducida por el cliente.
+        ◦   Si coinciden, la licencia se guarda en la tabla licencia y la aplicación procede al login. Si no, se
+            muestra un error.
+    6.  Ejecuciones Posteriores:
+        ◦   Cada vez que la aplicación se inicie, verificará la licencia almacenada en la base de datos contra
+            la MAC actual del equipo y la "semilla secreta". Si todo coincide, la aplicación se inicia normalmente.
+            Si no (por ejemplo, cambio de hardware o manipulación de la licencia), se volverá a mostrar el LicenseDialog.

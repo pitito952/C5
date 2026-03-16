@@ -14,10 +14,11 @@ import sys
 import os
 import logging
 from datetime import datetime
-from PySide6.QtWidgets import QApplication, QDialog
+from PySide6.QtWidgets import QApplication, QDialog, QMessageBox
 from views.main_window import MainWindow
 from views.login_window import LoginWindow
 from database.connection import DatabaseConnection
+from database.init_db import init_db
 
 def setup_logging():
     """Configura el sistema de logging."""
@@ -43,6 +44,7 @@ def setup_logging():
     logging.getLogger('').addHandler(console)
 
 def main():
+    """Función principal que inicia la aplicación."""
     setup_logging()
     logging.info("[MAIN] Entrando al programa.")
 
@@ -52,8 +54,30 @@ def main():
     app.setStyle("Fusion")
     
     try:
-        db = DatabaseConnection()
+        # --- Verificación de la Base de Datos ---
+        db_checker = DatabaseConnection()
+        if not db_checker.check_database_exists():
+            logging.warning("[MAIN] La base de datos no existe. Intentando crearla...")
+            
+            msg_box = QMessageBox()
+            msg_box.setIcon(QMessageBox.Information)
+            msg_box.setWindowTitle("Asistente de Primera Ejecución")
+            msg_box.setText("No se ha encontrado la base de datos. Se procederá a crearla.\n\nEste proceso solo ocurrirá una vez.")
+            msg_box.setStandardButtons(QMessageBox.Ok)
+            msg_box.button(QMessageBox.Ok).setText("Aceptar")
+            msg_box.exec()
+            
+            init_db(ask_confirmation=False) # Ejecutar sin pedir confirmación
+            
+            # Volver a verificar después de la creación
+            if not db_checker.check_database_exists():
+                raise Exception("No se pudo crear la base de datos. Revise la conexión y los permisos.")
         
+        # --- Conexión principal para la aplicación ---
+        db = DatabaseConnection()
+        if not db.get_connection():
+            raise Exception("No se pudo establecer la conexión principal a la base de datos.")
+
         # Show Login First
         logging.info("[MAIN] Iniciando ventana de Login.")
         login = LoginWindow(db)
@@ -71,6 +95,7 @@ def main():
             sys.exit(0)
     except Exception as e:
         logging.critical(f"[MAIN] Error crítico no controlado: {e}", exc_info=True)
+        QMessageBox.critical(None, "Error Crítico", str(e))
         sys.exit(1)
 
 if __name__ == "__main__":

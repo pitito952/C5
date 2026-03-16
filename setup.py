@@ -73,8 +73,8 @@ build_exe_options = {
 }
 
 # Configuracin para que no se abra una consola en Windows (aplicacin de GUI)
-#base = "Win32GUI" if sys.platform == "win32" else None
-base = None
+base = "Win32GUI" if sys.platform == "win32" else None
+#base = None
 
 setup(
     name=app_name,

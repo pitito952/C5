@@ -8,9 +8,9 @@ class PDF(FPDF):
 
     def header(self):
         self.set_font('Arial', 'B', 12)
-        self.cell(0, 10, 'Reporte de Movimientos por Categoría', 0, 1, 'C')
+        self.cell(0, 5, 'Reporte de Movimientos por Categoría', 0, 0, 'L')
         self.set_font('Arial', '', 8)
-        self.cell(0, 5, f"Fecha de Emisión: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}", 0, 1, 'C')
+        self.cell(0, 5, f"Fecha de Emisión: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}", 0, 1, 'R')
         self.ln(5)
 
     def footer(self):

@@ -53,19 +53,29 @@ def decrypt_password(encrypted_password, key):
     except Exception:
         return encrypted_password
 
-def init_db():
+def init_db(ask_confirmation=True):
+    """
+    Inicializa la base de datos.
+    :param ask_confirmation: Si es True, pedirá confirmación al usuario por consola.
+    """
+    if ask_confirmation:
+        confirm = input("¿Estás seguro de que deseas inicializar la base de datos? Esto podría borrar datos existentes. (s/N): ")
+        if confirm.lower() != 's':
+            print("Operación cancelada.")
+            return
+
     conn = None
     cursor = None
     try:
         key = load_key()
         raw_password = os.getenv("DB_PASSWORD", "")
         db_password = decrypt_password(raw_password, key)
-        db_name = os.getenv("DB_DATABASE", "caja_chica_db")
+        db_name = os.getenv("DB_NAME", "caja_chica_db")
 
         # --- Paso 1: Conexión inicial para crear la base de datos ---
         print("Conectando al servidor MySQL...")
         conn = mysql.connector.connect(
-            host=os.getenv("DB_HOST", "127.0.0.1"),
+            host=os.getenv("DB_HOST", "localhost"),
             user=os.getenv("DB_USER", "root"),
             password=db_password,
             port=int(os.getenv("DB_PORT", 3306))
@@ -73,7 +83,6 @@ def init_db():
         cursor = conn.cursor()
         print(f"Creando base de datos '{db_name}' si no existe...")
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
-        conn.commit()
         cursor.close()
         conn.close()
         print("Base de datos asegurada.")
@@ -81,7 +90,7 @@ def init_db():
         # --- Paso 2: Conexión a la base de datos específica para crear las tablas ---
         print(f"Conectando a la base de datos '{db_name}'...")
         conn = mysql.connector.connect(
-            host=os.getenv("DB_HOST", "127.0.0.1"),
+            host=os.getenv("DB_HOST", "localhost"),
             user=os.getenv("DB_USER", "root"),
             password=db_password,
             port=int(os.getenv("DB_PORT", 3306)),
@@ -91,20 +100,16 @@ def init_db():
         
         script_path = os.path.join(os.path.dirname(__file__), 'schema.sql')
         
-        # --- Lógica de Lectura y Separación de Comandos Mejorada ---
         with open(script_path, 'r', encoding='utf-8') as f:
             clean_script = ''
             for line in f:
-                # Ignorar líneas que son solo comentarios
                 if not line.strip().startswith('--'):
                     clean_script += line
-            # Dividir el script limpio por el delimitador
             sql_commands = [cmd.strip() for cmd in clean_script.split(';') if cmd.strip()]
 
         print("Ejecutando script para crear tablas...")
         
         for command in sql_commands:
-            # El comando 'USE' ya no es necesario porque nos conectamos directamente a la BD
             if command.upper().startswith('USE '):
                 continue
             
@@ -133,8 +138,4 @@ def init_db():
         print("Conexión cerrada.")
 
 if __name__ == "__main__":
-    confirm = input("¿Estás seguro de que deseas inicializar la base de datos? Esto podría borrar datos existentes. (s/N): ")
-    if confirm.lower() == 's':
-        init_db()
-    else:
-        print("Operación cancelada.")
+    init_db(ask_confirmation=True)

@@ -20,3 +20,7 @@ dist/
 build/
 *.egg-info/
 C5_Instalador.exe/
+
+# Directorios usados en programación
+logs/
+reports/

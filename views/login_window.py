@@ -91,22 +91,21 @@ class LoginWindow(QDialog):
         layout.addLayout(btn_layout)
 
         # --- Conexiones de señales para UX ---
-        # Al presionar Enter en usuario, saltar a contraseña
         self.le_usuario.returnPressed.connect(self.le_password.setFocus)
-        
-        # Actualizar estado del botón cuando el texto cambie en cualquiera de los campos
         self.le_usuario.textChanged.connect(self.actualizar_estado_boton)
         self.le_password.textChanged.connect(self.actualizar_estado_boton)
+        self.cb_caja.currentIndexChanged.connect(self.actualizar_estado_boton)
 
     def actualizar_estado_boton(self):
         """
         Habilita o deshabilita el botón 'Ingresar' basado en si los campos
-        de usuario y contraseña tienen texto.
+        de usuario, contraseña y caja son válidos.
         """
         usuario_ok = len(self.le_usuario.text().strip()) > 0
         password_ok = len(self.le_password.text().strip()) > 0
-        
-        if usuario_ok and password_ok:
+        caja_ok = self.cb_caja.currentData() is not None # Verifica que no sea el placeholder
+
+        if usuario_ok and password_ok and caja_ok:
             self.btn_ingresar.setEnabled(True)
             self.btn_ingresar.setDefault(True)
         else:
@@ -114,15 +113,19 @@ class LoginWindow(QDialog):
             self.btn_ingresar.setDefault(False)
 
     def cargar_cajas(self):
+        """Carga las cajas activas en el ComboBox, añadiendo un placeholder inicial."""
         try:
-            query = "SELECT id, nombre FROM configuracion_caja WHERE estado = 'Activa'"
+            query = "SELECT id, nombre FROM configuracion_caja WHERE estado = 'Activa' ORDER BY nombre"
             cajas = self.db.execute_query(query)
             self.cb_caja.clear()
+            
+            # Añadir placeholder
+            self.cb_caja.addItem("--- Seleccione una Caja ---", userData=None)
+            
             if cajas:
                 for caja in cajas:
                     self.cb_caja.addItem(caja['nombre'], userData=caja['id'])
             else:
-                self.cb_caja.addItem("Sin cajas activas")
                 logging.warning("[LOGIN] No se encontraron cajas activas en la base de datos.")
         except Exception as e:
             logging.error(f"[LOGIN] Error al cargar cajas: {e}")
@@ -138,7 +141,7 @@ class LoginWindow(QDialog):
             return
             
         if not caja_id:
-            QMessageBox.warning(self, "Error", "Debe existir al menos una caja activa para iniciar operaciones.")
+            QMessageBox.warning(self, "Error", "Debe seleccionar una caja para iniciar operaciones.")
             logging.warning("[LOGIN] Intento de login fallido: No hay caja seleccionada.")
             return
             
