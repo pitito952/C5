@@ -18,9 +18,7 @@ __pycache__/
 # Archivos de distribución
 dist/
 build/
-*.egg-info/
-C5_Instalador.exe/
-
-# Directorios usados en programación
 logs/
 reports/
+*.egg-info/
+C5_Instalador.exe/

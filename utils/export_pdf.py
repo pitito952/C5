@@ -8,22 +8,58 @@ class PDFReport(FPDF):
         self.parametros = parametros or {}
 
     def header(self):
-        # Logo
+        # Márgenes
+        m_left = 10
+        m_top = 10
+        
+        # Datos de la empresa
         logo_path = self.parametros.get('ruta_logo')
-        if logo_path and os.path.isfile(logo_path):
+        nombre_empresa = self.parametros.get('nombre_empresa', 'Mi Empresa')
+
+        # Configuración de dimensiones
+        logo_height = 30 # Altura del logo en mm
+        font_size = 14   # Tamaño de fuente del nombre
+        
+        # Posicionamiento
+        self.set_xy(m_left, m_top)
+        
+        has_logo = logo_path and os.path.isfile(logo_path)
+        
+        if has_logo:
+            # Insertar logo a la izquierda
+            # image(name, x, y, w, h) - Si w o h es 0, se calcula proporcionalmente
             try:
-                self.image(logo_path, 10, 8, 33)
+                self.image(logo_path, x=m_left, y=m_top, h=logo_height)
             except Exception:
-                pass 
-        
-        self.set_font("Arial", "B", 15)
-        
-        if logo_path and os.path.isfile(logo_path):
-            self.cell(40)
+                pass # Si falla la imagen, ignorar
             
-        nombre_empresa = self.parametros.get('nombre_empresa', 'Reporte de Caja Chica')
-        self.cell(0, 10, nombre_empresa, 0, 1, "C")
-        self.ln(10)
+            # Mover cursor a la derecha del logo
+            # Asumimos un ancho de logo aproximado o dejamos un margen fijo
+            self.set_xy(m_left + 20 + 5, m_top) # 20mm ancho aprox + 5mm margen
+            
+            # Nombre de la empresa alineado a la derecha del logo, centrado verticalmente aprox
+            self.set_font("Arial", "B", font_size)
+            # Calcular posición Y para centrar texto respecto al logo
+            # Altura texto ~ font_size / 2.8 in mm. 
+            # Ajuste manual simple:
+            self.set_y(m_top + (logo_height/2) - 3) 
+            self.set_x(m_left + logo_height + 5) # Asumiendo logo cuadrado o ajustar x
+            
+            self.cell(0, 6, nombre_empresa, 0, 1, "L")
+            
+            # Moverse debajo del encabezado
+            #self.ln(logo_height - 6 + 5)
+            self.ln(5)
+            
+        else:
+            # Sin logo, solo nombre centrado
+            self.set_font("Arial", "B", 16)
+            self.cell(0, 10, nombre_empresa, 0, 1, "C")
+            self.ln(5)
+
+        # Línea separadora opcional
+        # self.line(m_left, self.get_y(), 200, self.get_y())
+        self.ln(2)
 
     def footer(self):
         self.set_y(-15)
@@ -33,14 +69,14 @@ class PDFReport(FPDF):
 def generar_vale_pdf(movimiento_data, output_path="vale.pdf", parametros=None):
     # Obtener símbolo de moneda de los parámetros, por defecto '$'
     simbolo = parametros.get('simbolo_moneda', '$') if parametros else '$'
-    
+
     pdf = PDFReport(parametros=parametros)
     pdf.alias_nb_pages()
     pdf.add_page()
     
     pdf.set_font("Arial", "B", 14)
     tipo = movimiento_data['tipo'].upper()
-    pdf.cell(0, 10, f"COMPROBANTE DE {tipo}", 0, 1, "C")
+    pdf.cell(0, 10, f"CAJA CHICA - COMPROBANTE DE {tipo}", 0, 1, "C")
     pdf.ln(10)
     
     pdf.set_font("Arial", "", 12)
@@ -59,6 +95,13 @@ def generar_vale_pdf(movimiento_data, output_path="vale.pdf", parametros=None):
     pdf.cell(50, 10, "Concepto:", 0, 0)
     pdf.cell(0, 10, str(movimiento_data['concepto']), 0, 1)
     
+    # Comprobante
+    comp_tipo = movimiento_data.get('comprobante_tipo') or ''
+    comp_num = movimiento_data.get('comprobante_numero') or ''
+    if comp_tipo or comp_num:
+        pdf.cell(50, 10, "Doc. Referencia:", 0, 0)
+        pdf.cell(0, 10, f"{comp_tipo} {comp_num}".strip(), 0, 1)
+
     pdf.ln(5)
     pdf.set_font("Arial", "B", 16)
     pdf.cell(50, 10, "MONTO:", 0, 0)
@@ -83,7 +126,7 @@ def generar_listado_pdf(movimientos_list, info_extra, parametros=None, output_pa
     pdf.add_page()
     
     pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 10, f"Listado de Movimientos", 0, 1, "C")
+    pdf.cell(0, 10, f"Listado de Movimientos de Caja Chica", 0, 1, "C")
     
     pdf.set_font("Arial", "", 10)
     pdf.cell(0, 8, f"Filtrado desde: {info_extra['desde']} hasta: {info_extra['hasta']}", 0, 1)
@@ -93,10 +136,10 @@ def generar_listado_pdf(movimientos_list, info_extra, parametros=None, output_pa
     pdf.set_fill_color(200, 220, 255)
     pdf.set_font("Arial", "B", 9)
     
-    w = [30, 35, 30, 15, 35, 105, 27]
+    w = [30, 35, 30, 15, 35, 80, 25, 27] # Ajustado para incluir comprobante
     
-    headers = ["Fecha", "Caja", "Usuario", "Tipo", "Categoría", "Concepto", f"Monto ({simbolo})"]
-    for i in range(7):
+    headers = ["Fecha", "Caja", "Usuario", "Tipo", "Categoría", "Concepto", "Doc.", f"Monto ({simbolo})"]
+    for i in range(len(headers)):
         pdf.cell(w[i], 8, headers[i], 1, 0, 'C', True)
     pdf.ln()
     
@@ -115,9 +158,14 @@ def generar_listado_pdf(movimientos_list, info_extra, parametros=None, output_pa
         else:
             total_egresos += monto
             
-        concepto = str(row['concepto'])[:60]
+        concepto = str(row['concepto'])[:45]
         caja_name = str(row.get('caja', 'N/A'))[:20]
         usuario_name = str(row.get('usuario', 'N/A'))[:15]
+        
+        # Comprobante
+        ctipo = row.get('comprobante_tipo') or ''
+        cnum = row.get('comprobante_numero') or ''
+        comp = f"{ctipo} {cnum}".strip()
         
         pdf.cell(w[0], 6, str(fecha), 1)
         pdf.cell(w[1], 6, caja_name, 1)
@@ -125,8 +173,9 @@ def generar_listado_pdf(movimientos_list, info_extra, parametros=None, output_pa
         pdf.cell(w[3], 6, str(row['tipo']), 1)
         pdf.cell(w[4], 6, str(row.get('categoria', ''))[:20], 1)
         pdf.cell(w[5], 6, concepto, 1)
+        pdf.cell(w[6], 6, comp, 1)
         
-        pdf.cell(w[6], 6, f"{monto:.2f}", 1, 0, 'R')
+        pdf.cell(w[7], 6, f"{monto:.2f}", 1, 0, 'R')
         pdf.ln()
         
     pdf.ln(5)

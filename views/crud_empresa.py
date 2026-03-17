@@ -74,6 +74,10 @@ class CrudEmpresa(QDialog):
         self.le_tasa.setValidator(validator)
         self.le_tasa.setPlaceholderText("Ej. 1.0000")
 
+        self.le_licencia = QLineEdit()
+        self.le_licencia.setMaxLength(50)
+        self.le_licencia.setPlaceholderText("Licencia")
+
         form_layout.addRow("Código (3 letras):", self.le_codigo)
         form_layout.addRow("Nombre de Empresa:", self.le_nombre)
         form_layout.addRow("Ruta Logo:", logo_layout)
@@ -81,6 +85,7 @@ class CrudEmpresa(QDialog):
         form_layout.addRow("Símbolo Moneda:", self.le_simbolo)
         form_layout.addRow("Nombre Moneda:", self.le_nombre_moneda)
         form_layout.addRow("Tasa de Cambio:", self.le_tasa)
+        form_layout.addRow("Licencia:", self.le_licencia)
 
         layout.addWidget(form_widget)
 
@@ -121,8 +126,8 @@ class CrudEmpresa(QDialog):
     def load_data(self):
         # Asegurarse de que el registro de parámetros exista
         self.db.execute_query("""
-            INSERT IGNORE INTO parametros_control (id, codigo_empresa, nombre_empresa, simbolo_moneda, nombre_moneda, tasa_cambio) 
-            VALUES (1, 'EMP', 'Mi Empresa', '$', 'Peso', 1.0000)
+            INSERT IGNORE INTO parametros_control (id, codigo_empresa, nombre_empresa, simbolo_moneda, nombre_moneda, tasa_cambio, clave_licencia) 
+            VALUES (1, 'EMP', 'Mi Empresa', '$', 'Peso', 1.0000, 12345678)
         """)
         
         query = "SELECT * FROM parametros_control WHERE id = 1"
@@ -135,6 +140,7 @@ class CrudEmpresa(QDialog):
             self.le_simbolo.setText(row.get('simbolo_moneda', '$'))
             self.le_nombre_moneda.setText(row.get('nombre_moneda', 'Peso'))
             self.le_tasa.setText(str(row.get('tasa_cambio', '1.0000')))
+            self.le_licencia.setText(row.get('clave_licencia', ''))
             
             logo_path = row.get('ruta_logo', '')
             if logo_path:
@@ -150,7 +156,8 @@ class CrudEmpresa(QDialog):
         simbolo = self.le_simbolo.text().strip()
         nombre_moneda = self.le_nombre_moneda.text().strip()
         tasa_str = self.le_tasa.text().strip()
-        
+        licencia = self.le_licencia.text().strip()
+
         # Código y Nombre de empresa son los únicos campos de texto obligatorios
         if not all([codigo, nombre, tasa_str]):
             QMessageBox.warning(self, "Error", "Código, Nombre de Empresa y Tasa de Cambio son obligatorios.")
@@ -168,10 +175,11 @@ class CrudEmpresa(QDialog):
             query = """
                 UPDATE parametros_control 
                 SET codigo_empresa=%s, nombre_empresa=%s, ruta_logo=%s, 
-                    simbolo_moneda=%s, nombre_moneda=%s, tasa_cambio=%s
+                    simbolo_moneda=%s, nombre_moneda=%s, tasa_cambio=%s,
+                    clave_licencia=%s
                 WHERE id=1
             """
-            params = (codigo, nombre, logo_val, simbolo, nombre_moneda, tasa)
+            params = (codigo, nombre, logo_val, simbolo, nombre_moneda, tasa, licencia)
             self.db.execute_query(query, params)
 
             QMessageBox.information(self, "Éxito", "Parámetros actualizados correctamente.")

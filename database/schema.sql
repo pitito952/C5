@@ -117,7 +117,8 @@ CREATE TABLE IF NOT EXISTS parametros_control (
     ruta_logo VARCHAR(255) NULL,
     simbolo_moneda VARCHAR(5),
     nombre_moneda VARCHAR(50),
-    tasa_cambio DECIMAL(10, 4)
+    tasa_cambio DECIMAL(10, 4),
+    clave_licencia VARCHAR(59) NOT NULL
 ) ENGINE=InnoDB;
 
 -- Valores por defecto

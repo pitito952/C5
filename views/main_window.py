@@ -54,6 +54,8 @@ class MainWindow(QMainWindow):
         self.caja_nombre = caja_nombre
         self.sesion_id = None 
         self.simbolo_moneda = "$" # Valor por defecto
+        self.nombre_empresa = "Ni Empresa"  # Valor por defecto
+        self.ruta_logo = ""
         self.fondo_fijo = 0.0
         self.saldo_actual_caja = 0.0
         
@@ -80,10 +82,12 @@ class MainWindow(QMainWindow):
     def cargar_parametros_empresa(self):
         """Carga el símbolo de moneda desde la base de datos."""
         try:
-            query = "SELECT simbolo_moneda FROM parametros_control WHERE id = 1"
+            query = "SELECT simbolo_moneda, nombre_empresa, ruta_logo FROM parametros_control WHERE id = 1"
             res = self.db.execute_query(query)
             if res:
                 self.simbolo_moneda = res[0].get('simbolo_moneda', '') or ""
+                self.nombre_empresa = res[0].get('nombre_empresa', '') or "Mi Empresa"
+                self.ruta_logo = res[0].get('ruta_logo', '') or ''
         except Exception as e:
             logging.error(f"[MAIN_WINDOW] Error cargando parámetros de empresa: {e}")
 
@@ -517,7 +521,12 @@ class MainWindow(QMainWindow):
             filepath = os.path.join(reports_dir, filename)
 
             try:
-                parametros = {'simbolo_moneda': self.simbolo_moneda}
+                #parametros = {'simbolo_moneda': self.simbolo_moneda}
+                parametros = {
+                    'simbolo_moneda': self.simbolo_moneda,
+                    'nombre_empresa': self.nombre_empresa,
+                    'ruta_logo': self.ruta_logo
+                }
                 generar_vale_pdf(mov_data, filepath, parametros=parametros)
                 logging.info(f"[MAIN_WINDOW] Vale generado para movimiento ID {mov_id} en {filepath}.")
                 if abrir_archivo:
@@ -593,7 +602,12 @@ class MainWindow(QMainWindow):
             }
             
             # Pasar parámetros de empresa (moneda)
-            parametros = {'simbolo_moneda': self.simbolo_moneda}
+            #parametros = {'simbolo_moneda': self.simbolo_moneda}
+            parametros = {
+                'simbolo_moneda': self.simbolo_moneda,
+                'nombre_empresa': self.nombre_empresa,
+                'ruta_logo': self.ruta_logo
+            }
             generar_listado_pdf(
                 movimientos_list=data,
                 info_extra=info_extra,
@@ -696,7 +710,12 @@ class MainWindow(QMainWindow):
             'hasta': end_date.toString("dd/MM/yyyy"),
             'caja_nombre': self.caja_nombre
         }
-        parametros = {'simbolo_moneda': self.simbolo_moneda}
+        #parametros = {'simbolo_moneda': self.simbolo_moneda}
+        parametros = {
+            'simbolo_moneda': self.simbolo_moneda,
+            'nombre_empresa': self.nombre_empresa,
+            'ruta_logo': self.ruta_logo
+        }
 
         try:
             generar_reporte_por_categoria(movimientos, info_extra, filepath, parametros)

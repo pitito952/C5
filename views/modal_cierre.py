@@ -32,6 +32,10 @@ class ModalCierre(QDialog):
         self.caja_nombre = caja_nombre
         self.usuario_nombre = usuario_nombre
         self.caja_id = None
+        
+        # Datos de la empresa para el reporte
+        self.nombre_empresa = "Mi Empresa"
+        self.ruta_logo = ""
 
         self.lbl_ingresos = self.lbl_inicial = self.lbl_sistema = self.lbl_egresos = None
         self.lbl_sistema = self.lbl_diferencia = self.te_obs = self.btn_cerrar = self.btn_cancelar = None
@@ -45,8 +49,20 @@ class ModalCierre(QDialog):
         self.resize(450, 450)
         self.setModal(True)
         
+        self.load_company_data() # Cargar datos de empresa
         self.setup_ui()
         self.load_session_data()
+
+    def load_company_data(self):
+        """Carga los datos de la empresa desde la base de datos."""
+        try:
+            query = "SELECT nombre_empresa, ruta_logo FROM parametros_control WHERE id = 1"
+            res = self.db.execute_query(query)
+            if res:
+                self.nombre_empresa = res[0].get('nombre_empresa', '') or "Mi Empresa"
+                self.ruta_logo = res[0].get('ruta_logo', '') or ""
+        except Exception as e:
+            logging.error(f"[MODAL_CIERRE] Error cargando datos de empresa: {e}")
 
     def format_money(self, amount):
         """Formatea un monto con el símbolo de moneda configurado."""
@@ -288,7 +304,11 @@ class ModalCierre(QDialog):
                 'observaciones': obs
             }
             
-            parametros = {'simbolo_moneda': self.simbolo_moneda}
+            parametros = {
+                'simbolo_moneda': self.simbolo_moneda,
+                'nombre_empresa': self.nombre_empresa,
+                'ruta_logo': self.ruta_logo
+            }
             
             generar_reporte_cierre(cierre_data, filepath, parametros)
             
